@@ -30,6 +30,7 @@ export function useRegisterForm() {
     email?: string;
     password?: string;
     confirmPassword?: string;
+    courseStrand?: string;
     department?: string;
   }>({});
   const [shake, setShake] = useState(false);
@@ -62,6 +63,11 @@ export function useRegisterForm() {
 
     if (password !== confirmPassword) {
       next.confirmPassword = "Passwords do not match.";
+    }
+
+    // Role-specific field validation
+    if (role === "student" && !courseStrand.trim()) {
+      next.courseStrand = "Please specify your course or strand.";
     }
 
     if (role === "teacher" && !department.trim()) {
@@ -108,8 +114,8 @@ export function useRegisterForm() {
         fullName,
         email,
         role,
-        courseStrand,
-        department,
+        courseStrand: role === "student" ? courseStrand : undefined,
+        department: role === "teacher" ? department : undefined,
         password,
       },
       {

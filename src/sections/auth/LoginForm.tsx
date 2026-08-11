@@ -13,8 +13,8 @@ import styles from "@/sections/auth/AuthLayout/AuthLayout.module.css"; // Scoped
 
 // List of hardcoded mock IDs that can bypass verification checks
 const MOCK_CREDENTIALS_LIST = [
-  { id: "TCH-9941", label: "Teacher Demo Account" },
-  { id: "STD-2026-0001", label: "Student Demo Account" },
+  { id: "TCH-99410", label: "Teacher Demo Account" },
+  { id: "STD-20261", label: "Student Demo Account" },
 ];
 
 export function LoginForm() {
@@ -33,6 +33,21 @@ export function LoginForm() {
 
   const { meta } = loginData;
   const { assets } = landingData;
+
+  // Handles uppercase transformation and allows flexible formats up to 15 characters
+  const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Convert to uppercase and strip out special characters except hyphens
+    const rawVal = e.target.value.toUpperCase().replace(/[^A-Z0-9-]/g, "");
+
+    // Cap string at 15 characters total
+    const formatted = rawVal.slice(0, 15);
+
+    setIdNumber(formatted);
+
+    if (errors.idNumber) {
+      setErrors((prev) => ({ ...prev, idNumber: undefined }));
+    }
+  };
 
   // Helper to quickly fill the form for testing
   const handleSelectMockAccount = (id: string) => {
@@ -82,14 +97,11 @@ export function LoginForm() {
                 <input
                   id="login-id"
                   type="text"
-                  placeholder="e.g., STD-2026-0001 or TCH-9941"
+                  placeholder="e.g., STD-2026-0001 or TCH-12345"
                   value={idNumber}
-                  onChange={(e) => {
-                    setIdNumber(e.target.value);
-                    if (errors.idNumber)
-                      setErrors((prev) => ({ ...prev, idNumber: undefined }));
-                  }}
-                  className={`${styles.input} ${
+                  onChange={handleIdChange}
+                  maxLength={15} // Updated to allow up to 15 characters
+                  className={`${styles.input} uppercase ${
                     errors.idNumber ? styles.inputHasError : ""
                   }`}
                 />
@@ -168,6 +180,8 @@ export function LoginForm() {
             src={assets.backgroundImagePath}
             alt="Canvas Background"
             fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            priority
             className={styles.mediaBgImage}
           />
         </div>
@@ -179,6 +193,8 @@ export function LoginForm() {
               src={assets.logoPath}
               alt="Logo"
               fill
+              sizes="(max-width: 768px) 64px, 96px"
+              priority
               className={styles.logoImage}
             />
           </div>

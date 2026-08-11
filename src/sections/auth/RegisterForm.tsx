@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,12 +16,14 @@ import {
   GraduationCap,
   Building2,
   CheckCircle2,
+  ShieldAlert,
+  ShieldCheck,
 } from "lucide-react";
 import { useRegisterForm } from "@/hooks/AuthHooks/useRegisterForm";
 import { landingData } from "@/data/landingData";
 import { loginData } from "@/data/loginData";
 
-import styles from "@/sections/auth/AuthLayout/AuthLayout.module.css"; // Scoped CSS module for AuthLayout
+import styles from "@/sections/auth/AuthLayout/AuthLayout.module.css";
 
 export function RegisterForm() {
   const {
@@ -54,6 +56,84 @@ export function RegisterForm() {
 
   const isStudent = role === "student";
 
+  // Pre-fill ID field with prefix when switching roles
+  useEffect(() => {
+    const requiredPrefix = isStudent ? "STD-" : "TCH-";
+    if (!idNumber || !idNumber.startsWith(requiredPrefix)) {
+      setIdNumber(requiredPrefix);
+    }
+  }, [role, isStudent, setIdNumber, idNumber]);
+
+  // Handle prefix control on ID Number
+  const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const requiredPrefix = isStudent ? "STD-" : "TCH-";
+    let val = e.target.value.toUpperCase();
+
+    if (!val.startsWith(requiredPrefix)) {
+      val = requiredPrefix;
+    }
+
+    const formatted = val.slice(0, 15);
+    setIdNumber(formatted);
+
+    if (errors.idNumber) {
+      setErrors((prev) => ({ ...prev, idNumber: undefined }));
+    }
+  };
+
+  // Evaluate password strength dynamically
+  const passwordStrength = useMemo(() => {
+    if (!password) return null;
+    let score = 0;
+    if (password.length >= 6) score++;
+    if (password.length >= 8) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+
+    if (score <= 1) return { label: "Weak", color: "text-red-500", isWeak: true };
+    if (score === 2 || score === 3) return { label: "Medium", color: "text-amber-500", isWeak: false };
+    return { label: "Strong", color: "text-emerald-500", isWeak: false };
+  }, [password]);
+
+  // Live validation for password matching
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setConfirmPassword(val);
+
+    if (password && val && password !== val) {
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: "Passwords do not match.",
+      }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: undefined,
+      }));
+    }
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setPassword(val);
+
+    if (errors.password) {
+      setErrors((prev) => ({ ...prev, password: undefined }));
+    }
+
+    if (confirmPassword && val !== confirmPassword) {
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: "Passwords do not match.",
+      }));
+    } else if (confirmPassword && val === confirmPassword) {
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: undefined,
+      }));
+    }
+  };
+
   return (
     <Card className={`${styles.card} ${shake ? styles.shake : ""}`}>
       {/* LEFT SIDE: Inputs and Selection Details */}
@@ -74,7 +154,7 @@ export function RegisterForm() {
             className={`${styles.headerGroup} ${styles.fieldEnter}`}
             style={{ animationDelay: "40ms" }}
           >
-            <span className={styles.accessBadge}>Atlas Security Mesh</span>
+            <span className={styles.accessBadge}>Atlas Security Registration</span>
             <h2 className={styles.title}>Account Registration</h2>
           </div>
 
@@ -133,11 +213,8 @@ export function RegisterForm() {
                     isStudent ? "e.g., STD-2026-0001" : "e.g., TCH-2026-0089"
                   }
                   value={idNumber}
-                  onChange={(e) => {
-                    setIdNumber(e.target.value.replace(/[`'"]/g, ""));
-                    if (errors.idNumber)
-                      setErrors((prev) => ({ ...prev, idNumber: undefined }));
-                  }}
+                  onChange={handleIdChange}
+                  maxLength={15}
                   className={`${styles.input} ${styles.inputUppercase} ${
                     errors.idNumber ? styles.inputHasError : ""
                   }`}
@@ -169,7 +246,7 @@ export function RegisterForm() {
                   id="reg-name"
                   type="text"
                   placeholder={
-                    isStudent ? "e.g., Julian Platino" : "e.g., Dr. Alexander Vance"
+                    isStudent ? "e.g., Jason Adrian Platino" : "e.g., Dr. Alexander Vance"
                   }
                   value={fullName}
                   onChange={(e) => {
@@ -235,9 +312,16 @@ export function RegisterForm() {
               className={`${styles.fieldGroup} ${styles.fieldEnter}`}
               style={{ animationDelay: "240ms" }}
             >
-              <label htmlFor="reg-password" className={styles.label}>
-                Password
-              </label>
+              <div className={styles.labelWrapper}>
+                <label htmlFor="reg-password" className={styles.label}>
+                  Password
+                </label>
+                {passwordStrength && (
+                  <span className={`text-xs font-semibold ${passwordStrength.color}`}>
+                    Strength: {passwordStrength.label}
+                  </span>
+                )}
+              </div>
               <div className={styles.inputWrapper}>
                 <Lock
                   className={`${styles.inputIcon} ${
@@ -249,16 +333,18 @@ export function RegisterForm() {
                   type="password"
                   placeholder="At least 6 characters"
                   value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    if (errors.password)
-                      setErrors((prev) => ({ ...prev, password: undefined }));
-                  }}
+                  onChange={handlePasswordChange}
                   className={`${styles.input} ${
                     errors.password ? styles.inputHasError : ""
                   }`}
                 />
               </div>
+              {passwordStrength?.isWeak && (
+                <p className="mt-1 flex items-center gap-1 text-xs text-amber-500">
+                  <ShieldAlert className="h-3 w-3" />
+                  Weak password. Include numbers and special characters for higher security.
+                </p>
+              )}
               {errors.password && (
                 <p className={styles.errorText}>
                   <AlertCircle className={styles.alertIcon} />
@@ -288,19 +374,18 @@ export function RegisterForm() {
                   type="password"
                   placeholder="Re-enter your password"
                   value={confirmPassword}
-                  onChange={(e) => {
-                    setConfirmPassword(e.target.value);
-                    if (errors.confirmPassword)
-                      setErrors((prev) => ({
-                        ...prev,
-                        confirmPassword: undefined,
-                      }));
-                  }}
+                  onChange={handleConfirmPasswordChange}
                   className={`${styles.input} ${
                     errors.confirmPassword ? styles.inputHasError : ""
                   }`}
                 />
               </div>
+              {confirmPassword && password === confirmPassword && (
+                <p className="mt-1 flex items-center gap-1 text-xs text-emerald-500">
+                  <ShieldCheck className="h-3 w-3" />
+                  Passwords match.
+                </p>
+              )}
               {errors.confirmPassword && (
                 <p className={styles.errorText}>
                   <AlertCircle className={styles.alertIcon} />
@@ -309,31 +394,45 @@ export function RegisterForm() {
               )}
             </div>
 
-            {/* DYNAMIC FIELD INTERCHANGE BLOCK */}
+            {/* REQUIRED DYNAMIC FIELD INTERCHANGE BLOCK */}
             {isStudent ? (
               <div
                 className={`${styles.fieldGroup} ${styles.fieldEnter}`}
                 style={{ animationDelay: "320ms" }}
               >
-                <div className={styles.labelWrapper}>
-                  <label htmlFor="reg-course" className={styles.label}>
-                    Course / Strand
-                  </label>
-                  <span className={styles.optionalBadge}>Optional</span>
-                </div>
+                <label htmlFor="reg-course" className={styles.label}>
+                  Course / Strand
+                </label>
                 <div className={styles.inputWrapper}>
                   <Bookmark
-                    className={`${styles.inputIcon} ${styles.iconDefault}`}
+                    className={`${styles.inputIcon} ${
+                      errors.courseStrand ? styles.iconError : styles.iconDefault
+                    }`}
                   />
                   <input
                     id="reg-course"
                     type="text"
                     placeholder="e.g., BSCS or STEM"
                     value={courseStrand}
-                    onChange={(e) => setCourseStrand(e.target.value)}
-                    className={styles.input}
+                    onChange={(e) => {
+                      setCourseStrand(e.target.value);
+                      if (errors.courseStrand)
+                        setErrors((prev) => ({
+                          ...prev,
+                          courseStrand: undefined,
+                        }));
+                    }}
+                    className={`${styles.input} ${
+                      errors.courseStrand ? styles.inputHasError : ""
+                    }`}
                   />
                 </div>
+                {errors.courseStrand && (
+                  <p className={styles.errorText}>
+                    <AlertCircle className={styles.alertIcon} />
+                    {errors.courseStrand}
+                  </p>
+                )}
               </div>
             ) : (
               <div
@@ -381,7 +480,7 @@ export function RegisterForm() {
             <div className={styles.actionArea}>
               <Button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || Boolean(errors.confirmPassword)}
                 className={styles.submitBtn}
               >
                 {isSubmitting ? (
@@ -412,6 +511,8 @@ export function RegisterForm() {
             src={assets.backgroundImagePath}
             alt="Canvas Background"
             fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            priority
             className={styles.mediaBgImage}
           />
         </div>
@@ -423,6 +524,8 @@ export function RegisterForm() {
               src={assets.logoPath}
               alt="Logo"
               fill
+              sizes="(max-width: 768px) 64px, 96px"
+              priority
               className={styles.logoImage}
             />
           </div>

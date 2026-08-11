@@ -1,32 +1,18 @@
 /* Custom Keyframe Animations */
 @keyframes pulseDot {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
 }
 
 @keyframes blinkCursor {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes fadeSlideUp {
@@ -70,10 +56,11 @@
   pointer-events: none;
 }
 
-/* Page Canvas - White Background */
+/* Page Canvas */
 .container {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -81,7 +68,7 @@
   background-color: #ffffff;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow: hidden;
+  overflow-x: hidden;
   color: #1e293b;
 }
 
@@ -91,11 +78,12 @@
   max-width: 80rem;
   margin-left: auto;
   margin-right: auto;
-  padding: 1.5rem;
+  padding: 1.25rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 10;
+  box-sizing: border-box;
 }
 
 .brandGroup {
@@ -115,6 +103,7 @@
   border-radius: 0.5rem;
   box-shadow: none;
   transition: border-color 0.2s ease;
+  flex-shrink: 0;
 }
 
 .brandName {
@@ -133,11 +122,12 @@
   color: #0f172a;
   text-decoration: none;
   background-color: #f1f5f9;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.25rem;
   border-radius: 9999px;
   border: 1px solid #e2e8f0;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
 }
 
 .signInLink:hover {
@@ -146,17 +136,15 @@
   border-color: #004B23;
 }
 
-/* Main Hero Section (Kept with sharp edges) */
+/* Main Hero Section - Dynamic & Proportionate Height */
 .main {
   position: relative;
   width: 100%;
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 0;
-  margin: 1rem 0;
   border-top: 1px solid #e2e8f0;
   border-bottom: 1px solid #e2e8f0;
 }
@@ -164,10 +152,7 @@
 /* Hero Background Image */
 .heroBgWrapper {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   z-index: 0;
   pointer-events: none;
 }
@@ -175,10 +160,7 @@
 /* Dark Tint Overlay */
 .darkOverlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   z-index: 1;
   pointer-events: none;
   background-color: rgba(0, 0, 0, 0.55);
@@ -190,6 +172,7 @@
   left: -10%;
   width: 600px;
   height: 600px;
+  max-width: 100vw;
   border-radius: 50%;
   background-color: rgba(16, 185, 129, 0.2);
   filter: blur(130px);
@@ -203,12 +186,15 @@
   z-index: 10;
   max-width: 56rem;
   width: 100%;
-  padding: 4rem 1.5rem;
+  /* Clamp padding scales smoothly between 2rem and 4.5rem based on screen height */
+  padding: clamp(2rem, 6vh, 4.5rem) 1.5rem;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  justify-content: center;
+  gap: clamp(1rem, 2.5vh, 2rem);
+  box-sizing: border-box;
 }
 
 .badge {
@@ -235,45 +221,35 @@
   border-radius: 9999px;
   background-color: #059669;
   animation: pulseDot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  flex-shrink: 0;
 }
 
+/* Fluid Title Font-Sizing */
 .title {
-  font-size: 2.25rem;
-  line-height: 1.05;
+  /* Dynamic font sizing scales proportionally with viewport width and aspect ratio */
+  font-size: clamp(1.85rem, 5vw + 0.5rem, 4.25rem);
+  line-height: 1.08;
   font-weight: 900;
   color: #ffffff;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
-  max-width: 48rem;
+  max-width: 52rem;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  word-break: break-word;
 }
 
-@media (min-width: 640px) {
-  .title {
-    font-size: 4.5rem;
-  }
-}
-
-/* NEW WHITE TEXT RULE: */
 .gradientText {
   color: #ffffff;
-  /* Optional: keeps consistent drop shadow with main title */
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); 
 }
 
 .description {
-  font-size: 0.875rem;
+  font-size: clamp(0.8125rem, 1.2vw, 1rem);
   color: #f1f5f9;
   font-weight: 500;
-  max-width: 36rem;
-  line-height: 1.625;
+  max-width: 38rem;
+  line-height: 1.6;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-@media (min-width: 640px) {
-  .description {
-    font-size: 1rem;
-  }
 }
 
 .ctaWrapper {
@@ -283,6 +259,7 @@
 .ctaButton {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.625rem;
   height: 3rem;
   padding: 0 1.75rem;
@@ -313,19 +290,21 @@
   width: 1rem;
   stroke-width: 2.5;
   transition: transform 0.2s ease;
+  flex-shrink: 0;
 }
 
 .ctaButton:hover .ctaIcon {
   transform: translateX(0.25rem);
 }
 
-/* Footer Section - Light Clean Theme with Rounded Cards */
+/* Footer Section - Responsive Grid */
 .footer {
   width: 100%;
   border-top: 1px solid #e2e8f0;
   background-color: #ffffff;
-  padding: 2.5rem 0;
+  padding: 2rem 0;
   z-index: 10;
+  box-sizing: border-box;
 }
 
 .footerGrid {
@@ -337,9 +316,10 @@
   grid-template-columns: 1fr;
   gap: 1rem;
   text-align: left;
+  box-sizing: border-box;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .footerGrid {
     grid-template-columns: repeat(3, 1fr);
   }

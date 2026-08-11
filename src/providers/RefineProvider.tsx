@@ -1,14 +1,11 @@
-"use client";
+"use client"
 
 import React from "react";
 import { Refine, DataProvider, AuthProvider } from "@refinedev/core";
-import { createClient } from "@supabase/supabase-js";
+// 1. Remove createClient import from @supabase/supabase-js
+// 2. Import your central singleton instance:
+import { supabaseClient } from "@/lib/supabaseClient";
 import { setSessionAction, clearSessionAction } from "@/app/actions/auth";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
-
-export const supabaseClient = createClient(supabaseUrl, supabasePublishableKey);
 
 // Clean helper: Strips symbols and normalizes ID
 const cleanIdNumber = (rawId: any): string => {
@@ -23,12 +20,10 @@ function formatIdentity(profile: any, fallbackEmail?: string) {
   const isTeacher = profile.role === "teacher" || profile.role === "faculty";
   const fullName = profile.full_name || profile.teacher_full_name || profile.student_full_name || "User Account";
 
-  // Resolve department / strand fallback text
   const primaryDept = profile.department || profile.course_strand || (isTeacher ? "Faculty Core" : "General");
 
   return {
     ...profile,
-    // Keep `id` as the primary Database/Auth UUID for queries and foreign keys
     id: profile.id || profile.uuid,
     uuid: profile.id || profile.uuid,
     id_number: profile.id_number || profile.id,
@@ -36,12 +31,10 @@ function formatIdentity(profile: any, fallbackEmail?: string) {
     email: profile.email || fallbackEmail || "",
     role: profile.role || "student",
     
-    // Modern & Legacy Name Mapping
     full_name: fullName,
     student_full_name: !isTeacher ? fullName : "",
     teacher_full_name: isTeacher ? fullName : "",
     
-    // Modern & Legacy Section & Program Mapping
     grade_level: profile.grade_level || profile.gradeLevel || (isTeacher ? "Faculty Core" : "Year 3"),
     gradeLevel: profile.grade_level || profile.gradeLevel || (isTeacher ? "Faculty Core" : "Year 3"),
     section_name: primaryDept,
@@ -85,7 +78,6 @@ export function RefineProvider({ children }: { children: React.ReactNode }) {
         };
       }
 
-      // 1. Look up profile directly by ID Number
       const { data: profile, error: profileErr } = await supabaseClient
         .from("profiles")
         .select("*")
@@ -102,7 +94,6 @@ export function RefineProvider({ children }: { children: React.ReactNode }) {
         };
       }
 
-      // 2. If a real email exists, sign in with real Supabase Auth
       if (profile.email) {
         const { error: authError } = await supabaseClient.auth.signInWithPassword({
           email: profile.email,
@@ -117,7 +108,6 @@ export function RefineProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
-      // 3. Save active session using formatted profile
       const formatted = formatIdentity(profile);
       await setSessionCookie(formatted);
 
@@ -147,7 +137,6 @@ export function RefineProvider({ children }: { children: React.ReactNode }) {
         };
       }
 
-      // 1. Check if ID Number already exists in profiles
       const { data: existing } = await supabaseClient
         .from("profiles")
         .select("id_number")
@@ -166,7 +155,6 @@ export function RefineProvider({ children }: { children: React.ReactNode }) {
 
       let authUserId = crypto.randomUUID();
 
-      // 2. ONLY create Supabase Auth User if a REAL email was provided
       if (email && email.trim() !== "") {
         const { data: authData, error: authError } = await supabaseClient.auth.signUp({
           email: email.trim(),
@@ -192,7 +180,6 @@ export function RefineProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
-      // 3. Insert directly into profiles using clean ID Number
       const { data: newProfile, error: profileError } = await supabaseClient
         .from("profiles")
         .upsert(
@@ -238,7 +225,6 @@ export function RefineProvider({ children }: { children: React.ReactNode }) {
     },
 
     getIdentity: async () => {
-      // 1. Check local storage cache first
       if (typeof window !== "undefined") {
         const savedUser = localStorage.getItem("atlas_user");
         if (savedUser) {
@@ -251,7 +237,6 @@ export function RefineProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
-      // 2. Fetch fresh session & profile from Supabase
       const { data: sessionData } = await supabaseClient.auth.getSession();
       const user = sessionData?.session?.user;
 
@@ -301,23 +286,15 @@ export function RefineProvider({ children }: { children: React.ReactNode }) {
           if ("field" in filter && "value" in filter) {
             const val = filter.value;
 
-            // Skip empty/undefined/null filters
             if (val !== undefined && val !== null && val !== "") {
-
-              // Handle multi-value query strings (e.g. "uuid1,uuid2")
               if (typeof val === "string" && val.includes(",")) {
                 const valuesArray = val.split(",").map((v) => v.trim());
                 query = query.in(filter.field, valuesArray);
-              } 
-              // Handle native arrays of values
-              else if (Array.isArray(val)) {
+              } else if (Array.isArray(val)) {
                 query = query.in(filter.field, val);
-              } 
-              // Single value matching
-              else {
+              } else {
                 query = query.eq(filter.field, val);
               }
-
             }
           }
         }

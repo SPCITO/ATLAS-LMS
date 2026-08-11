@@ -5,6 +5,13 @@
   width: 100%;
   flex: 1;
   min-height: 0;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+/* Darkens and subtly dims the background content when a modal is active */
+.isBlurred {
+  filter: brightness(0.65) blur(1px);
+  pointer-events: none; /* Prevents clicks on background content while active */
 }
 
 .tabsRoot {
@@ -47,7 +54,6 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  /* Smooth scrolling for touch devices */
   -webkit-overflow-scrolling: touch; 
 }
 
@@ -84,7 +90,6 @@
   justify-content: flex-end;
   gap: 0.5rem;
   position: relative;
-  /* Prevent controls from growing on mobile */
   width: 100%;
   flex-wrap: wrap;
 }
@@ -118,17 +123,29 @@
   background-color: #e2e8f0;
 }
 
-/* FIX: Mobile position and width for dropdown menu */
+/* Fullscreen Backdrop Overlay for Dropdown Menu */
+.menuBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background-color: rgba(0, 0, 0, 0.6); /* Darkened screen overlay */
+  backdrop-filter: blur(6px);            /* Enhanced blur background */
+  -webkit-backdrop-filter: blur(6px);    /* Safari support */
+  transition: opacity 0.2s ease-in-out;
+}
+
+/* Centered Settings Modal */
 .controlsMenu {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  margin-top: 0.5rem;
-  width: calc(100vw - 2rem);
-  max-width: 18rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 22rem; /* Comfortable modal width */
+  margin: 0;
   background-color: #ffffff;
   border: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   padding: 1rem;
   z-index: 50;
@@ -136,6 +153,13 @@
   flex-direction: column;
   gap: 0.75rem;
   text-align: left;
+}
+
+@media (min-width: 640px) {
+  .controlsMenu {
+    width: 22rem;
+    max-width: 90vw;
+  }
 }
 
 .adminHeader {
@@ -230,7 +254,7 @@
   border: 1px solid rgba(226, 232, 240, 0.8);
   border-radius: 0.75rem;
   padding: 0.375rem 0.625rem;
-  min-width: 0; /* Prevents overflow inside code container */
+  min-width: 0;
 }
 
 .codeText {
@@ -281,7 +305,7 @@
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   transition: all 0.15s;
   border: none;
-  flex: 1; /* Stretch on small mobile displays */
+  flex: 1;
 }
 
 @media (min-width: 640px) {
@@ -306,12 +330,11 @@
   background-color: #1e293b;
 }
 
-/* FIX: Content area scroll boundaries */
 .tabContentArea {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  overflow-x: hidden; /* Prevents side scrolling */
+  overflow-x: hidden;
   padding: 0.75rem;
   margin: 0;
   display: flex;
@@ -351,7 +374,6 @@
   background-color: rgba(241, 245, 249, 0.5);
 }
 
-/* FIX: Text truncation on mobile */
 .moduleLeft {
   display: flex;
   align-items: center;
@@ -377,6 +399,19 @@
   white-space: nowrap;
   flex: 1;
   min-width: 0;
+}
+
+.moduleActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .moduleActions {
+    width: auto;
+  }
 }
 
 .viewDocBtn {
@@ -432,7 +467,6 @@
   color: #94a3b8;
 }
 
-/* FIX: Assessment Card Layout on Mobile */
 .assessmentCard {
   padding: 0.875rem;
   background-color: #ffffff;
@@ -528,63 +562,6 @@
   margin: 0;
 }
 
-/* FIX: Action Container for buttons & trash icon on small screens */
-.assessmentActions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-}
-
-@media (min-width: 640px) {
-  .assessmentActions {
-    width: auto;
-  }
-}
-
-.assessmentActionBtn {
-  width: 100%;
-  height: 2rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  background-color: #0f172a;
-  color: #ffffff;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@media (min-width: 640px) {
-  .assessmentActionBtn {
-    width: auto;
-  }
-}
-
-.assessmentActionBtn:hover {
-  background-color: #1e293b;
-}
-
-.iconSm {
-  height: 1rem;
-  width: 1rem;
-}
-
-.iconXs {
-  height: 0.875rem;
-  width: 0.875rem;
-}
-
-.textEmerald {
-  color: #059669;
-}
-
-/* Container for buttons */
 .assessmentActions {
   display: flex;
   align-items: center;
@@ -599,9 +576,8 @@
   }
 }
 
-/* Allow Grade Logs button to expand and share space with delete button */
 .assessmentActionBtn {
-  flex: 1; /* Expands to fill available space next to trash icon on mobile */
+  flex: 1;
   height: 2.25rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -625,7 +601,10 @@
   }
 }
 
-/* Style for the trash button */
+.assessmentActionBtn:hover {
+  background-color: #1e293b;
+}
+
 .deleteAssessmentBtn {
   flex-shrink: 0;
   height: 2.25rem;
@@ -634,4 +613,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.iconSm {
+  height: 1rem;
+  width: 1rem;
+}
+
+.iconXs {
+  height: 0.875rem;
+  width: 0.875rem;
+}
+
+.textEmerald {
+  color: #059669;
 }

@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { landingData } from "@/data/landingData";
-import { UserPlus, LogIn } from "lucide-react";
+import { UserPlus } from "lucide-react";
 
 import styles from "@/sections/auth/AuthLayout/AuthLayout.module.css"; // Scoped CSS module for AuthLayout 
 
@@ -17,23 +17,15 @@ export function AuthLayout({ children }: AuthLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Determine active view to render correct helper details
-  const isRegisterPage = pathname === "/register";
+  // Check if current route is the registration page
+  const isRegisterPage = pathname === "/register" || pathname === "/login/register";
 
   return (
     /* Root structural canvas frame container - using slate-950 for a rich, deep base */
     <div className={styles.container}>
-      {/* STICKY CORNER FLOATING NAV BUTTON */}
-      <div className={styles.floatingNav}>
-        {isRegisterPage ? (
-          <button
-            onClick={() => router.push("/login")}
-            className={`${styles.navBtn} ${styles.signInBtn}`}
-          >
-            <LogIn className={`${styles.iconSm} ${styles.emeraldIconLight}`} />
-            <span>Sign In</span>
-          </button>
-        ) : (
+      {/* STICKY CORNER FLOATING NAV BUTTON (Hidden when on register page) */}
+      {!isRegisterPage && (
+        <div className={styles.floatingNav}>
           <button
             onClick={() => router.push("/login/register")}
             className={`${styles.navBtn} ${styles.registerBtn}`}
@@ -41,8 +33,8 @@ export function AuthLayout({ children }: AuthLayoutProps) {
             <UserPlus className={`${styles.iconSm} ${styles.emeraldIconSoft}`} />
             <span>Register Account</span>
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Background Image Layer Container */}
       <div className={styles.bgLayer}>

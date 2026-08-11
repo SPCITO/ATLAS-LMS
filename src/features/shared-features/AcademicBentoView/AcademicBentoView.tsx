@@ -8,7 +8,7 @@ import { User, GraduationCap, Layers, Loader2 } from "lucide-react";
 import { UserIdentityProfile } from "@/types";
 import { landingData } from "@/data/landingData";
 
-import styles from "@/features/students/AcademicBentoView/AcademicBentoView.module.css";
+import styles from "@/features/shared-features/AcademicBentoView/AcademicBentoView.module.css";
 
 interface AcademicBentoViewProps {
   roleTitle: string;
@@ -37,6 +37,7 @@ export function AcademicBentoView({ roleTitle, navigationSlot, workspaceSlot }: 
           alt="Campus Architectural Framework Base"
           fill
           priority
+          sizes="100vw" /* <--- Fixed for full-screen background */
           className={styles.bgImage}
         />
       </div>
@@ -51,6 +52,8 @@ export function AcademicBentoView({ roleTitle, navigationSlot, workspaceSlot }: 
                 src={assets?.logoPath || "/logo.png"}
                 alt="Institutional Branding Logo Identity"
                 fill
+                priority
+                sizes="(max-width: 768px) 48px, 64px" /* <--- Fixed for header logo */
                 className={styles.logoImage}
               />
             </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { AcademicBentoView } from "@/features/students/AcademicBentoView/AcademicBentoView";
+import { AcademicBentoView } from "@/features/shared-features/AcademicBentoView/AcademicBentoView";
 import { LiveStreamIndicator } from "@/features/students/LiveStreamIndicator/LiveStreamIndicator";
 import { ProfileView } from "@/features/shared-features/ProfileView/ProfileView"; 
 import { Button } from "@/components/ui/button";

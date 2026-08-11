@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ArrowRight, Compass, Shield, Terminal } from "lucide-react";
 import { landingData } from "@/data/landingData";
 import { TypewriterText } from "@/components/ui/TypewriterText";
-import styles from "@/app/home.module.css"; // Scoped CSS module for landing page
+import styles from "@/app/home.module.css";
 
 const iconMap = {
   Compass: Compass,
@@ -17,8 +17,8 @@ const iconMap = {
 export default function Home() {
   const { meta, assets, hero, features } = landingData;
 
-  // Track sequence stage for hero text transitions
-  const [stage, setStage] = useState<"badge" | "title1" | "title2" | "done">("badge");
+  // Single boolean flag to trigger title animation after badge completes
+  const [badgeComplete, setBadgeComplete] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -28,14 +28,12 @@ export default function Home() {
           <div className={styles.logoBox}>
             <Image
               src={assets.logoPath}
-              alt="Institutional Branding Identity Logo"
+              alt={`${meta.systemName} Logo`}
               fill
               style={{ objectFit: "contain", padding: "0.25rem" }}
             />
           </div>
-          <span className={styles.brandName}>
-            {meta.systemName}
-          </span>
+          <span className={styles.brandName}>{meta.systemName}</span>
         </div>
 
         <Link href="/login" className={styles.signInLink}>
@@ -43,66 +41,50 @@ export default function Home() {
         </Link>
       </header>
 
-      {/* Main Hero Section with scoped background image and dark overlay */}
+      {/* Main Hero Section */}
       <main className={styles.main}>
-        {/* Hero Background Image */}
+        {/* Background Image */}
         <div className={styles.heroBgWrapper}>
           <Image
-            src="/Background/green.png"
-            alt="Institutional Campus Context Background"
+            src={assets.backgroundImagePath}
+            alt="Institutional Campus Background"
             fill
             priority
             style={{ objectFit: "cover", objectPosition: "center" }}
           />
         </div>
 
-        {/* Dark Tint Overlay for Image Contrast */}
+        {/* Tint Overlays */}
         <div className={styles.darkOverlay} />
-
-        {/* Grid Overlay */}
         <div className={styles.gridOverlay} />
-
-        {/* Accent Flare */}
         <div className={styles.accentFlare} />
 
         {/* Hero Content Container */}
         <div className={styles.heroContent}>
-          {/* System Tag Badge */}
+          {/* Badge */}
           <div className={styles.badge}>
             <span className={styles.pulseDot} />
             <TypewriterText
               text={meta.badgeText}
               speed={25}
               delay={100}
-              onComplete={() => setStage("title1")}
+              onComplete={() => setBadgeComplete(true)}
               showCursor
             />
           </div>
 
-          {/* Title */}
+          {/* Unified Single Title */}
           <h1 className={styles.title}>
-            {stage !== "badge" && (
+            {badgeComplete && (
               <TypewriterText
-                text={hero.titleLineOne}
-                speed={35}
-                onComplete={() => setStage("title2")}
+                text={hero.title}
+                speed={30}
                 showCursor
               />
             )}
-            <br />
-            {(stage === "title2" || stage === "done") && (
-              <span className={styles.gradientText}>
-                <TypewriterText
-                  text={hero.gradientText}
-                  speed={35}
-                  onComplete={() => setStage("done")}
-                  showCursor
-                />
-              </span>
-            )}
           </h1>
 
-          {/* Description */}
+          {/* Subtitle Description */}
           <p className={`${styles.description} ${styles.fadeSlideUp} ${styles.delay100}`}>
             {hero.description}
           </p>

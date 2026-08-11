@@ -154,16 +154,22 @@ export function CourseWorkspace({
             <div className={styles.teacherControls}>
               
               {/* CONSOLIDATED COURSE CONTROLS DROPDOWN */}
-              <div className={styles.controlsDropdownContainer}>
-                <Button 
-                  onClick={() => setShowControlsMenu(!showControlsMenu)}
-                  className={styles.settingsButton}
-                  title="Course Controls"
-                >
-                  <Settings className={styles.iconSm} />
-                </Button>
+            <div className={styles.controlsDropdownContainer}>
+              <Button 
+                onClick={() => setShowControlsMenu(!showControlsMenu)}
+                className={styles.settingsButton}
+                title="Course Controls"
+              >
+                <Settings className={styles.iconSm} />
+              </Button>
 
-                {showControlsMenu && (
+              {/* BACKDROP OVERLAY */}
+              {showControlsMenu && (
+                <>
+                  <div 
+                    className={styles.menuBackdrop} 
+                    onClick={() => setShowControlsMenu(false)} 
+                  />
                   <div className={styles.controlsMenu}>
                     <div className={styles.adminHeader}>
                       <span className={styles.adminTitle}>Course Administration</span>
@@ -226,8 +232,9 @@ export function CourseWorkspace({
                       </div>
                     </div>
                   </div>
-                )}
-              </div>
+                </>
+              )}
+            </div>
 
               {/* CONTEXTUAL ADD ACTION */}
               {activeTab === "modules" ? (
