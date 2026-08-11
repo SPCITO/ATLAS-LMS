@@ -1,0 +1,206 @@
+/* Card layout & scroll container */
+.card {
+  background-color: #ffffff;
+  border-color: rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  overflow: hidden;
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.6);
+  flex-shrink: 0;
+}
+
+.cardTitle {
+  font-size: 0.875rem;
+  font-weight: 900;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.cardDescription {
+  font-size: 0.75rem;
+  color: var(--muted-foreground, #64748b);
+  margin-top: 0.125rem;
+}
+
+.uploadBtn {
+  height: 2.25rem;
+  background-color: var(--primary, #0f172a);
+  color: var(--primary-foreground, #ffffff);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.uploadBtn:hover {
+  background-color: #065f46; /* Tailwind emerald-800 equivalent */
+}
+
+.cardContent {
+  flex: 1 1 0%;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Table Header Sticky & Formatting */
+.tableHeader {
+  background-color: rgba(248, 250, 252, 0.7);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.headerRow {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.headerRow:hover {
+  background-color: transparent;
+}
+
+.thDocument {
+  width: 70%;
+  height: 2.5rem;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  padding-left: 1.5rem;
+}
+
+.thAction {
+  text-align: right;
+  height: 2.5rem;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  padding-right: 1.5rem;
+}
+
+/* Table Body Rows */
+.tableRow {
+  border-bottom: 1px solid rgba(241, 245, 249, 0.4);
+  transition: background-color 0.15s ease;
+}
+
+.tableRow:hover {
+  background-color: rgba(241, 245, 249, 0.3);
+}
+
+.cellDocument {
+  font-weight: 600;
+  color: #334155;
+  font-size: 0.75rem;
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+  padding-left: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.fileIcon {
+  height: 1rem;
+  width: 1rem;
+  color: var(--primary, #0f172a);
+  flex-shrink: 0;
+}
+
+.docTitle {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+@media (min-width: 640px) {
+  .docTitle {
+    max-width: 20rem;
+  }
+}
+
+.cellAction {
+  text-align: right;
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+  padding-right: 1.5rem;
+}
+
+.downloadBtn {
+  height: 1.75rem;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 0.5rem;
+  border-color: var(--border, #e2e8f0);
+  color: #475569;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.15s ease;
+}
+
+.downloadBtn:hover {
+  background-color: var(--secondary, #f8fafc);
+  color: var(--primary, #0f172a);
+}
+
+/* Loading & Utility */
+.loadingState {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground, #64748b);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  padding: 1.5rem;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.iconSm {
+  height: 0.875rem;
+  width: 0.875rem;
+}
+
+.iconXs {
+  height: 0.75rem;
+  width: 0.75rem;
+}

@@ -1,0 +1,158 @@
+.card {
+  background-color: #ffffff;
+  border-color: rgba(226, 232, 240, 0.8);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+
+.title {
+  font-size: 0.875rem;
+  font-weight: 900;
+  color: #1e293b;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.loadingState {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.thTeacherCol {
+  width: 50%;
+}
+
+.thStudentCol {
+  width: 70%;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.tableRow {
+  transition: background-color 0.15s ease;
+}
+
+.tableRow:hover {
+  background-color: rgba(248, 250, 252, 0.5);
+}
+
+.taskTitleCell {
+  font-weight: 600;
+  color: #334155;
+  font-size: 0.875rem;
+}
+
+.submissionsWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.submissionsIcon {
+  height: 0.875rem;
+  width: 0.875rem;
+  color: #94a3b8;
+}
+
+.gradeBtn {
+  height: 1.75rem;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 0.5rem;
+  border-color: #e2e8f0;
+}
+
+.gradeBtn:hover {
+  background-color: #f8fafc;
+}
+
+/* Review & Grading Modal Overlay & Card */
+.reviewOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1 rem;
+}
+
+.reviewCard {
+  width: 100%;
+  max-width: 700px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.submissionItem {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background-color: #f9fafb;
+}
+
+.submissionMeta {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.badgeSuccess {
+  background-color: #d1fae5;
+  color: #065f46;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.badgeDisabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}

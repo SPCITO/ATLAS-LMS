@@ -1,0 +1,251 @@
+/* src/sections/subject-hub/ClassRosterModal.module.css */
+
+/* Modal Container & Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.modalCard {
+  max-width: 42rem;
+  width: 100%;
+  padding: 1.5rem;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border, #27272a);
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.headerIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #10b981;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.closeButton {
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  transition: background-color 0.15s ease;
+}
+
+.closeButton:hover {
+  background-color: #262626;
+}
+
+.closeIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Search Container */
+.searchContainer {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.searchIcon {
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  color: var(--muted-foreground, #a1a1aa);
+}
+
+.searchInput {
+  width: 100%;
+  padding-left: 2.25rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: var(--background, #09090b);
+  border: 1px solid var(--border, #27272a);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  color: inherit;
+}
+
+.searchInput:focus {
+  outline: None;
+  border-color: #10b981;
+}
+
+/* Roster List Container */
+.rosterList {
+  max-height: 350px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-right: 0.25rem;
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  animation: spin 1s linear infinite;
+  color: #10b981;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Student Item Row */
+.studentRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border: 1px solid var(--border, #27272a);
+  border-radius: 0.5rem;
+  background-color: var(--card, #09090b);
+  transition: background-color 0.15s ease;
+}
+
+.studentRow:hover {
+  background-color: rgba(23, 23, 23, 0.5);
+}
+
+.studentInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.studentHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.studentName {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.idBadge {
+  font-size: 0.75rem;
+  background-color: var(--muted, #27272a);
+  color: var(--muted-foreground, #a1a1aa);
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.strandText {
+  font-size: 0.75rem;
+  color: var(--muted-foreground, #a1a1aa);
+}
+
+/* Student Actions */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.acceptBtn {
+  background-color: #059669;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.acceptBtn:hover {
+  background-color: #047857;
+}
+
+.btnIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.enrolledBadge {
+  font-size: 0.75rem;
+  color: #34d399;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: rgba(6, 78, 59, 0.5);
+  border: 1px solid rgba(6, 95, 70, 0.5);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.enrolledIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.removeBtn {
+  height: 2rem;
+  width: 2rem;
+}
+
+.trashIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.emptyState {
+  text-align: center;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  color: var(--muted-foreground, #a1a1aa);
+  font-size: 0.875rem;
+}
+
+/* Footer */
+.footer {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border, #27272a);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--muted-foreground, #a1a1aa);
+}

@@ -1,0 +1,459 @@
+/* Outer Container */
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  padding-bottom: 1rem;
+}
+
+/* Logging Out Overlay */
+.logoutOverlay {
+  position: fixed;
+  inset: 0;
+  height: 100vh;
+  width: 100vw;
+  background: radial-gradient(circle at center, #022c22 0%, #00170d 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  z-index: 50;
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pingCircle {
+  position: absolute;
+  height: 4rem;
+  width: 4rem;
+  border-radius: 9999px;
+  border: 2px solid rgba(16, 185, 129, 0.4);
+  animation: ping 1.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.logoutIconWrapper {
+  height: 3.75rem;
+  width: 3.75rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #34d399;
+  border-radius: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.logoutTitle {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.logoutDesc {
+  font-size: 0.75rem;
+  color: rgba(110, 231, 183, 0.7);
+  font-weight: 500;
+  max-width: 260px;
+  margin: 0;
+}
+
+/* Loading State */
+.loadingContainer {
+  height: 100%;
+  width: 100%;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.825rem;
+}
+
+/* Cards & Layout */
+.card, .heroCard {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+}
+
+.cardHeader {
+  padding: 1.25rem 1.25rem 0.5rem 1.25rem;
+}
+
+/* Hero Banner with SPC Image */
+.heroCard {
+  position: relative;
+}
+
+.heroBanner {
+  height: 7rem;
+  background-image: url('/Hero/SPC-Hero.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.25) 0%, rgba(2, 44, 34, 0.65) 100%);
+  pointer-events: none;
+}
+
+.heroContent {
+  padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+  position: relative;
+  padding-top: 0;
+}
+
+.userHeaderRow {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: -2.75rem;
+}
+
+@media (min-width: 640px) {
+  .userHeaderRow {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+}
+
+.userInfoGroup {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.25rem;
+}
+
+.avatarWrapper {
+  position: relative;
+}
+
+.avatar {
+  height: 5.25rem;
+  width: 5.25rem;
+  border-radius: 1.125rem;
+  background-color: #f8fafc;
+  border: 4px solid #ffffff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f172a;
+  flex-shrink: 0;
+}
+
+.avatarOnlineDot {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background-color: #10b981;
+  border: 2px solid #ffffff;
+}
+
+.roleBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.roleBadgeFaculty {
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.roleBadgeStudent {
+  background-color: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+.userName {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.025em;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.disconnectBtn {
+  height: 2.375rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  color: #e11d48;
+  border-color: #fecdd3;
+  background-color: #fff1f2;
+  border-radius: 0.625rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.disconnectBtn:hover {
+  color: #ffffff;
+  background-color: #e11d48;
+  border-color: #e11d48;
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.25);
+}
+
+/* Grid Layout */
+.mainGrid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .mainGrid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .registryCol {
+    grid-column: span 7 / span 7;
+  }
+
+  .securityCol {
+    grid-column: span 5 / span 5;
+  }
+}
+
+.spaceY6 {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Registry Matrix Elements */
+.cardTitle {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.grid2Col {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+@media (min-width: 500px) {
+  .grid2Col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.borderBottom {
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 1.25rem;
+}
+
+.dataTile {
+  background-color: #f8fafc;
+  padding: 0.75rem 0.875rem;
+  border-radius: 0.625rem;
+  border: 1px solid #f1f5f9;
+}
+
+.fieldLabel {
+  font-size: 10px;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+}
+
+.fieldValueMono {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #0f172a;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  margin-top: 0.25rem;
+  display: block;
+  letter-spacing: -0.02em;
+}
+
+.fieldValueText {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #334155;
+  margin-top: 0.25rem;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Security Section */
+.noticeBox {
+  padding: 0.875rem;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 0.625rem;
+  display: flex;
+  gap: 0.625rem;
+  align-items: flex-start;
+}
+
+.noticeText {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  font-weight: 500;
+  color: #166534;
+  margin: 0;
+}
+
+.resetBtn {
+  width: 100%;
+  background-color: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.025em;
+  border-radius: 0.625rem;
+  height: 2.375rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+}
+
+.resetBtn:hover {
+  background-color: #022c22;
+  box-shadow: 0 4px 12px rgba(2, 44, 34, 0.25);
+}
+
+.statusCard {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+}
+
+.statusRow {
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.statusGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.statusDot {
+  height: 0.625rem;
+  width: 0.625rem;
+  border-radius: 9999px;
+  background-color: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.statusTitle {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 0.025em;
+}
+
+.statusDesc {
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-top: 0.125rem;
+  margin-bottom: 0;
+}
+
+/* Animations & Utilities */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.iconSm {
+  height: 0.875rem;
+  width: 0.875rem;
+}
+
+.iconLg {
+  height: 2.25rem;
+  width: 2.25rem;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

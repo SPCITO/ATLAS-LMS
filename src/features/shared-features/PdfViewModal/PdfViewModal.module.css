@@ -1,0 +1,105 @@
+/* Container & Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(2, 6, 23, 0.6);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .overlay {
+    padding: 1.5rem;
+  }
+}
+
+.modalCard {
+  width: 100%;
+  max-width: 72rem; /* equivalent to max-w-6xl */
+  height: 90vh;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: none;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Modal Header */
+.header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f8fafc;
+  flex-shrink: 0;
+}
+
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.headerIcon {
+  height: 1rem;
+  width: 1rem;
+  color: var(--primary, #0f172a);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 28rem;
+  margin: 0;
+}
+
+.closeBtn {
+  height: 2rem;
+  width: 2rem;
+  padding: 0;
+  border-radius: 9999px;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeBtn:hover {
+  background-color: rgba(226, 232, 240, 0.8);
+}
+
+.iconSm {
+  height: 1rem;
+  width: 1rem;
+}
+
+/* Document Frame Area */
+.frameContainer {
+  flex: 1 1 0%;
+  background-color: #1e293b;
+  position: relative;
+}
+
+.iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  position: absolute;
+  inset: 0;
+}

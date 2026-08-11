@@ -1,0 +1,637 @@
+.workspaceContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+.tabsRoot {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background-color: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.headerBlock {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  background-color: rgba(248, 250, 252, 0.3);
+}
+
+@media (min-width: 640px) {
+  .headerBlock {
+    flex-direction: row;
+    align-items: center;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.tabsNavWrapper {
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* Smooth scrolling for touch devices */
+  -webkit-overflow-scrolling: touch; 
+}
+
+.tabsNavWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.tabsList {
+  background-color: rgba(241, 245, 249, 0.8);
+  padding: 0.25rem;
+  border-radius: 0.75rem;
+  display: inline-flex;
+}
+
+.tabsTrigger {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .tabsTrigger {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.teacherControls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  position: relative;
+  /* Prevent controls from growing on mobile */
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 640px) {
+  .teacherControls {
+    width: auto;
+    flex-wrap: nowrap;
+  }
+}
+
+.controlsDropdownContainer {
+  position: relative;
+}
+
+.settingsButton {
+  height: 2rem;
+  width: 2rem;
+  padding: 0;
+  background-color: #f1f5f9;
+  color: #334155;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.settingsButton:hover {
+  background-color: #e2e8f0;
+}
+
+/* FIX: Mobile position and width for dropdown menu */
+.controlsMenu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 0.5rem;
+  width: calc(100vw - 2rem);
+  max-width: 18rem;
+  background-color: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-radius: 1rem;
+  padding: 1rem;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.adminHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 0.5rem;
+}
+
+.adminTitle {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+}
+
+.activeBadge {
+  font-size: 9px;
+  font-weight: 700;
+  color: #059669;
+  background-color: #ecfdf5;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+}
+
+.deployButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  transition: background-color 0.15s;
+  cursor: pointer;
+  color: #334155;
+  text-align: left;
+  background: none;
+  border: none;
+}
+
+.deployButton:hover {
+  background-color: #f8fafc;
+}
+
+.deployBtnTitle {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.deployBtnSub {
+  font-size: 9px;
+  font-weight: 500;
+  color: #94a3b8;
+  display: block;
+  margin-top: 0.125rem;
+}
+
+.menuDivider {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.codeSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.subLabel {
+  font-size: 9px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.codeBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f8fafc;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 0.75rem;
+  padding: 0.375rem 0.625rem;
+  min-width: 0; /* Prevents overflow inside code container */
+}
+
+.codeText {
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #1e293b;
+  letter-spacing: 0.05em;
+}
+
+.linkText {
+  font-size: 10px;
+  font-weight: 500;
+  color: #64748b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  padding-right: 0.5rem;
+}
+
+.copyBtn {
+  color: #94a3b8;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.copyBtn:hover {
+  color: #334155;
+}
+
+.actionButton {
+  height: 2rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.15s;
+  border: none;
+  flex: 1; /* Stretch on small mobile displays */
+}
+
+@media (min-width: 640px) {
+  .actionButton {
+    flex: initial;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.addModuleBtn {
+  background-color: #059669;
+}
+.addModuleBtn:hover {
+  background-color: #047857;
+}
+
+.addTaskBtn {
+  background-color: #0f172a;
+}
+.addTaskBtn:hover {
+  background-color: #1e293b;
+}
+
+/* FIX: Content area scroll boundaries */
+.tabContentArea {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevents side scrolling */
+  padding: 0.75rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  outline: none;
+}
+
+@media (min-width: 768px) {
+  .tabContentArea {
+    padding: 1.5rem;
+  }
+}
+
+.moduleCard {
+  padding: 0.875rem;
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: background-color 0.15s;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .moduleCard {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+}
+
+.moduleCard:hover {
+  background-color: rgba(241, 245, 249, 0.5);
+}
+
+/* FIX: Text truncation on mobile */
+.moduleLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.fileIconWrapper {
+  padding: 0.5rem;
+  background-color: rgba(15, 23, 42, 0.05);
+  border-radius: 0.5rem;
+  color: #0f172a;
+  flex-shrink: 0;
+}
+
+.moduleTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #334155;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.viewDocBtn {
+  width: 100%;
+  height: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #334155;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+@media (min-width: 640px) {
+  .viewDocBtn {
+    width: auto;
+  }
+}
+
+.viewDocBtn:hover {
+  background-color: #f8fafc;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.emptyIcon {
+  height: 2rem;
+  width: 2rem;
+  color: #cbd5e1;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0.5rem;
+}
+
+.emptyText {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+}
+
+/* FIX: Assessment Card Layout on Mobile */
+.assessmentCard {
+  padding: 0.875rem;
+  background-color: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .assessmentCard {
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem;
+  }
+}
+
+.assessmentCard:hover {
+  border-color: rgba(15, 23, 42, 0.4);
+}
+
+.assessmentInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.assessmentTags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.typeBadge {
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.badgeExam {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fee2e2;
+}
+
+.badgeAssignment {
+  background-color: #ecfdf5;
+  color: #059669;
+  border: 1px solid #d1fae5;
+}
+
+.categoryBadge {
+  font-size: 9px;
+  font-weight: 700;
+  color: #64748b;
+  background-color: #f1f5f9;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.assessmentHeading {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.025em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+  width: 100%;
+}
+
+.dueDateText {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0;
+}
+
+/* FIX: Action Container for buttons & trash icon on small screens */
+.assessmentActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .assessmentActions {
+    width: auto;
+  }
+}
+
+.assessmentActionBtn {
+  width: 100%;
+  height: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #0f172a;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .assessmentActionBtn {
+    width: auto;
+  }
+}
+
+.assessmentActionBtn:hover {
+  background-color: #1e293b;
+}
+
+.iconSm {
+  height: 1rem;
+  width: 1rem;
+}
+
+.iconXs {
+  height: 0.875rem;
+  width: 0.875rem;
+}
+
+.textEmerald {
+  color: #059669;
+}
+
+/* Container for buttons */
+.assessmentActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .assessmentActions {
+    width: auto;
+    flex-shrink: 0;
+  }
+}
+
+/* Allow Grade Logs button to expand and share space with delete button */
+.assessmentActionBtn {
+  flex: 1; /* Expands to fill available space next to trash icon on mobile */
+  height: 2.25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #0f172a;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .assessmentActionBtn {
+    flex: initial;
+    width: auto;
+  }
+}
+
+/* Style for the trash button */
+.deleteAssessmentBtn {
+  flex-shrink: 0;
+  height: 2.25rem;
+  width: 2.25rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

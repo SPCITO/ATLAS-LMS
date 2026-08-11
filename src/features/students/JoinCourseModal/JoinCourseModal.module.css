@@ -1,0 +1,151 @@
+/* Overlay & Container */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.card {
+  max-width: 28rem;
+  width: 100%;
+  padding: 1.5rem;
+  background-color: var(--card, #09090b);
+  border: 1px solid var(--border, #27272a);
+  border-radius: 0.5rem;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border, #27272a);
+}
+
+.headerTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.headerIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #10b981;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--foreground, #ffffff);
+}
+
+.closeButton {
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--muted-foreground, #a1a1aa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.closeButton:hover {
+  background-color: var(--muted, #27272a);
+  color: var(--foreground, #ffffff);
+}
+
+.iconSm {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Form Styles */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground, #e4e4e7);
+}
+
+.input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  background-color: var(--background, #09090b);
+  border: 1px solid var(--border, #27272a);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--foreground, #ffffff);
+  transition: border-color 0.15s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #10b981;
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.uppercaseInput {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Footer Actions */
+.footerActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.cancelBtn {
+  font-size: 0.875rem;
+}
+
+.loaderContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

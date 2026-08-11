@@ -1,0 +1,144 @@
+.card {
+  background-color: #ffffff;
+  border-color: rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  flex: 1 1 0%;
+}
+
+.header {
+  border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.title {
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.titleIcon {
+  height: 0.875rem;
+  width: 0.875rem;
+  color: var(--primary, #0f172a);
+}
+
+.content {
+  flex: 1 1 0%;
+  overflow-y: auto;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 0;
+}
+
+/* Item Button */
+.itemBtn {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  text-align: left;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  border-width: 1px;
+  border-style: solid;
+  cursor: pointer;
+  background-color: rgba(248, 250, 252, 0.5);
+  color: #334155;
+  border-color: #f1f5f9;
+}
+
+.itemBtn:hover {
+  background-color: #f8fafc;
+}
+
+.itemBtnActive {
+  background-color: var(--primary, #0f172a);
+  color: var(--primary-foreground, #ffffff);
+  border-color: var(--primary, #0f172a);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.itemBtnActive:hover {
+  background-color: var(--primary, #0f172a);
+}
+
+/* Badge Icon Container */
+.iconBadge {
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  border-width: 1px;
+  border-style: solid;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease;
+  background-color: #ecfdf5;
+  border-color: rgba(209, 250, 229, 0.8);
+  color: #004b23;
+}
+
+.itemBtn:hover .iconBadge {
+  background-color: rgba(209, 250, 229, 0.6);
+}
+
+.iconBadgeActive {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.itemBtnActive:hover .iconBadgeActive {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.subjectIcon {
+  height: 1rem;
+  width: 1rem;
+  stroke-width: 2.2;
+}
+
+/* Text Container */
+.metaContainer {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.codeMeta {
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+}
+
+.codeMetaActive {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.subjectTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.375;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 0.125rem;
+}

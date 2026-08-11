@@ -1,0 +1,261 @@
+/* Card Base */
+.card {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1rem;
+  background-color: #ffffff; /* Always keep main container white */
+}
+
+.loadingSkeleton {
+  height: 8rem;
+  background-color: var(--muted, #f1f5f9);
+  opacity: 0.2;
+  border-radius: 1rem;
+}
+
+.pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Default / Inactive Card Style */
+.cardInactive {
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.cardInactive .headerTitle {
+  color: var(--muted-foreground, #64748b);
+}
+
+.cardInactive .radioIcon {
+  color: #94a3b8;
+}
+
+.cardInactive .studentPanel {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+/* Active Card Style (Balanced: White Container with Green Accents) */
+.cardActive {
+  background-color: #ffffff; /* White background */
+  color: #0f172a;
+  border: 1.5px solid #10b981; /* Green accent border */
+  box-shadow: 0 4px 16px -2px rgba(16, 185, 129, 0.12);
+}
+
+.cardActive .headerTitle {
+  color: #047857; /* Deep readable emerald text */
+}
+
+.cardActive .radioIcon {
+  color: #10b981; /* Bright emerald active icon */
+}
+
+.cardActive .studentPanel {
+  background-color: #ecfdf5; /* Subtle light emerald tint for active state */
+  border: 1px solid #a7f3d0;
+}
+
+.cardActive .panelTitle {
+  color: #065f46;
+}
+
+.cardActive .panelDescription {
+  color: #047857;
+}
+
+.cardActive .inputIcon {
+  color: #059669;
+}
+
+.cardActive .textInput {
+  background-color: #f0fdf4;
+  border-color: #6ee7b7;
+  color: #064e3b;
+}
+
+.cardActive .textInput::placeholder {
+  color: #059669;
+  opacity: 0.6;
+}
+
+.cardActive .submitBtn {
+  background-color: #059669;
+  color: #ffffff;
+}
+
+.cardActive .submitBtn:hover {
+  background-color: #047857;
+}
+
+/* Header Elements */
+.headerTitle {
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.radioIcon {
+  height: 0.875rem;
+  width: 0.875rem;
+}
+
+.radioIconInactive {
+  opacity: 0.4;
+}
+
+/* Student Panel */
+.studentPanel {
+  padding: 1rem;
+  border-radius: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .studentPanel {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.panelTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  margin: 0;
+}
+
+.panelDescription {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+  margin-top: 0.125rem;
+  margin-bottom: 0;
+}
+
+.linkWrapper {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .linkWrapper {
+    width: auto;
+  }
+}
+
+.joinBtn {
+  width: 100%;
+  background-color: #059669;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.joinBtn:hover {
+  background-color: #047857;
+  transform: translateY(-1px);
+}
+
+/* Teacher Form Control */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 1rem;
+  height: 1rem;
+  width: 1rem;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.textInput {
+  width: 100%;
+  height: 2.75rem;
+  padding-left: 2.75rem;
+  padding-right: 1rem;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #0f172a;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+}
+
+.textInput:focus {
+  border-color: #10b981;
+}
+
+.submitBtn {
+  width: 100%;
+  height: 2.5rem;
+  background-color: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.submitBtn:hover {
+  opacity: 0.9;
+}
+
+.errorMessage {
+  font-size: 0.75rem;
+  color: #ef4444;
+  margin-top: 0.25rem;
+}
+
+.iconSm {
+  height: 0.875rem;
+  width: 0.875rem;
+}
