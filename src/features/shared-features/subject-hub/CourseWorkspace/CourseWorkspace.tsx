@@ -71,7 +71,6 @@ export function CourseWorkspace({
   const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
   const [isRosterModalOpen, setIsRosterModalOpen] = useState(false);
   const [showControlsMenu, setShowControlsMenu] = useState(false);
-  const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
 
   // Identity state for student verification
@@ -114,13 +113,6 @@ export function CourseWorkspace({
 
   const subject = query.data?.data;
   const rawCode = (subject as any)?.course_code || (subject as any)?.code || "PENDING-CODE";
-  const inviteLink = `https://atlas.school/register?code=${rawCode}`;
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(inviteLink);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2000);
-  };
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(rawCode);
@@ -155,87 +147,76 @@ export function CourseWorkspace({
             <div className={styles.teacherControls}>
               
               {/* CONSOLIDATED COURSE CONTROLS DROPDOWN */}
-            <div className={styles.controlsDropdownContainer}>
-              <Button 
-                onClick={() => setShowControlsMenu(!showControlsMenu)}
-                className={styles.settingsButton}
-                title="Course Controls"
-              >
-                <Settings className={styles.iconSm} />
-              </Button>
+              <div className={styles.controlsDropdownContainer}>
+                <Button 
+                  onClick={() => setShowControlsMenu(!showControlsMenu)}
+                  className={styles.settingsButton}
+                  title="Course Controls"
+                >
+                  <Settings className={styles.iconSm} />
+                </Button>
 
-              {/* BACKDROP OVERLAY */}
-              {showControlsMenu && (
-                <>
-                  <div 
-                    className={styles.menuBackdrop} 
-                    onClick={() => setShowControlsMenu(false)} 
-                  />
-                  <div className={styles.controlsMenu}>
-                    <div className={styles.adminHeader}>
-                      <span className={styles.adminTitle}>Course Administration</span>
-                      <span className={styles.activeBadge}>Active</span>
-                    </div>
-
-                    {/* Trigger: Class Roster & Student Approvals */}
-                    <button
-                      onClick={() => {
-                        setIsRosterModalOpen(true);
-                        setShowControlsMenu(false);
-                      }}
-                      className={styles.deployButton}
-                    >
-                      <Users className={`${styles.iconSm} ${styles.textEmerald}`} />
-                      <div>
-                        <span className={styles.deployBtnTitle}>Class Roster</span>
-                        <span className={styles.deployBtnSub}>Manage & accept enrolled students</span>
+                {/* BACKDROP OVERLAY */}
+                {showControlsMenu && (
+                  <>
+                    <div 
+                      className={styles.menuBackdrop} 
+                      onClick={() => setShowControlsMenu(false)} 
+                    />
+                    <div className={styles.controlsMenu}>
+                      <div className={styles.adminHeader}>
+                        <span className={styles.adminTitle}>Course Administration</span>
+                        <span className={styles.activeBadge}>Active</span>
                       </div>
-                    </button>
 
-                    {/* Trigger: Deploy Subject */}
-                    <button
-                      onClick={() => {
-                        setIsSubjectModalOpen(true);
-                        setShowControlsMenu(false);
-                      }}
-                      className={styles.deployButton}
-                    >
-                      <FolderPlus className={`${styles.iconSm} ${styles.textEmerald}`} />
-                      <div>
-                        <span className={styles.deployBtnTitle}>Deploy New Subject</span>
-                        <span className={styles.deployBtnSub}>Generate setup codes for another class</span>
-                      </div>
-                    </button>
-
-                    <div className={styles.menuDivider}>
-                      {/* Copy Code */}
-                      <div className={styles.codeSection}>
-                        <span className={styles.subLabel}>
-                          <Share2 className={styles.iconXs} /> Invite Code
-                        </span>
-                        <div className={styles.codeBox}>
-                          <span className={styles.codeText}>{rawCode}</span>
-                          <button onClick={handleCopyCode} className={styles.copyBtn}>
-                            {copiedCode ? <Check className={`${styles.iconXs} ${styles.textEmerald}`} /> : <Copy className={styles.iconXs} />}
-                          </button>
+                      {/* Trigger: Class Roster & Student Approvals */}
+                      <button
+                        onClick={() => {
+                          setIsRosterModalOpen(true);
+                          setShowControlsMenu(false);
+                        }}
+                        className={styles.deployButton}
+                      >
+                        <Users className={`${styles.iconSm} ${styles.textEmerald}`} />
+                        <div>
+                          <span className={styles.deployBtnTitle}>Class Roster</span>
+                          <span className={styles.deployBtnSub}>Manage & accept enrolled students</span>
                         </div>
-                      </div>
+                      </button>
 
-                      {/* Copy Link */}
-                      <div className={styles.codeSection}>
-                        <span className={styles.subLabel}>Direct Invite URL</span>
-                        <div className={styles.codeBox}>
-                          <span className={styles.linkText}>{inviteLink}</span>
-                          <button onClick={handleCopyLink} className={styles.copyBtn}>
-                            {copiedLink ? <Check className={`${styles.iconXs} ${styles.textEmerald}`} /> : <Copy className={styles.iconXs} />}
-                          </button>
+                      {/* Trigger: Deploy Subject */}
+                      <button
+                        onClick={() => {
+                          setIsSubjectModalOpen(true);
+                          setShowControlsMenu(false);
+                        }}
+                        className={styles.deployButton}
+                      >
+                        <FolderPlus className={`${styles.iconSm} ${styles.textEmerald}`} />
+                        <div>
+                          <span className={styles.deployBtnTitle}>Deploy New Subject</span>
+                          <span className={styles.deployBtnSub}>Generate setup codes for another class</span>
+                        </div>
+                      </button>
+
+                      <div className={styles.menuDivider}>
+                        {/* Copy Code */}
+                        <div className={styles.codeSection}>
+                          <span className={styles.subLabel}>
+                            <Share2 className={styles.iconXs} /> Invite Code
+                          </span>
+                          <div className={styles.codeBox}>
+                            <span className={styles.codeText}>{rawCode}</span>
+                            <button onClick={handleCopyCode} className={styles.copyBtn}>
+                              {copiedCode ? <Check className={`${styles.iconXs} ${styles.textEmerald}`} /> : <Copy className={styles.iconXs} />}
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </>
-              )}
-            </div>
+                  </>
+                )}
+              </div>
 
               {/* CONTEXTUAL ADD ACTION */}
               {activeTab === "modules" ? (

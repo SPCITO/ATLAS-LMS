@@ -141,7 +141,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
-  max-width: 22rem; /* Comfortable modal width */
+  max-width: 22rem; /* Mobile default */
   margin: 0;
   background-color: #ffffff;
   border: 1px solid rgba(226, 232, 240, 0.8);
@@ -155,10 +155,13 @@
   text-align: left;
 }
 
+/* Expanded sizing for PC / Desktop viewports */
 @media (min-width: 640px) {
   .controlsMenu {
-    width: 22rem;
+    width: 28rem;
     max-width: 90vw;
+    padding: 1.5rem;
+    gap: 1rem;
   }
 }
 
@@ -640,4 +643,3 @@
 .textEmerald {
   color: #059669;
 }
-

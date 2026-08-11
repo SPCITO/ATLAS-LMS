@@ -1,9 +1,7 @@
-"use client"
+"use client";
 
 import React from "react";
 import { Refine, DataProvider, AuthProvider } from "@refinedev/core";
-// 1. Remove createClient import from @supabase/supabase-js
-// 2. Import your central singleton instance:
 import { supabaseClient } from "@/lib/supabaseClient";
 import { setSessionAction, clearSessionAction } from "@/app/actions/auth";
 
@@ -58,6 +56,7 @@ const setSessionCookie = async (profile: any) => {
 const clearSessionCookie = async () => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("atlas_user");
+    sessionStorage.clear();
   }
   try {
     await clearSessionAction();
@@ -266,14 +265,24 @@ export function RefineProvider({ children }: { children: React.ReactNode }) {
     },
 
     logout: async () => {
+      // 1. Clear server-side session cookie first
+      await clearSessionCookie();
+
+      // 2. Sign out of Supabase client session
+      await supabaseClient.auth.signOut();
+
+      // 3. Purge all browser client cache
       if (typeof window !== "undefined") {
-        localStorage.removeItem("atlas_user");
-        await clearSessionCookie();
-        await supabaseClient.auth.signOut();
-        window.location.href = "/login";
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Force full page hard replace so back button cannot restore previous state
+        window.location.replace("/login");
       }
+
       return { success: true, redirectTo: "/login" };
     },
+
     onError: async (error) => ({ error }),
   };
 
