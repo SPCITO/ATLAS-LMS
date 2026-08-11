@@ -26,8 +26,9 @@ import { CreateSubjectModal } from "../../../teacher/CreateSubjectModal/CreateSu
 import { StudentAssessmentModal } from "../../../students/StudentAssessmentModal/StudentAssessmentModal";
 import { ClassRosterModal } from "../../../teacher/ClassRosterModal/ClassRosterModal";
 import { TeacherAssessmentReviewModal } from "../../../teacher/TeacherAssessmentReviewModal/TeacherAssessmentReviewModal";
+import { CourseModule, AssessmentItem } from "@/types";
 
-import styles from "@/features/shared-features/subject-hub/CourseWorkspace/CourseWorkspace.module.css"; // Scoped CSS module for CourseWorkspace
+import styles from "@/features/shared-features/subject-hub/CourseWorkspace/CourseWorkspace.module.css";
 
 interface CourseWorkspaceProps {
   activeSubjectId: string | number;
@@ -77,7 +78,7 @@ export function CourseWorkspace({
   const { data: user } = useGetIdentity<any>();
   const studentId = user?.id;
 
-  // Query existing submissions for this student
+  // Query existing submissions for this student using result.data
   const { result: submissionsResult } = useList({
     resource: "submissions",
     filters: [
@@ -260,7 +261,7 @@ export function CourseWorkspace({
         {/* Content Region: Syllabus Files Table */}
         <TabsContent value="modules" className={styles.tabContentArea}>
           {filteredModules.length > 0 ? (
-            filteredModules.map((mod) => {
+            filteredModules.map((mod: CourseModule) => {
               const targetUrl = 
                 mod.fileUrl || 
                 (mod as any).file_url || 
@@ -319,7 +320,7 @@ export function CourseWorkspace({
         {/* Content Region: Academic Tasks Grid */}
         <TabsContent value="assessments" className={styles.tabContentArea}>
           {filteredAssessments.length > 0 ? (
-            filteredAssessments.map((asm) => {
+            filteredAssessments.map((asm: AssessmentItem) => {
               const isSubmitted = !isTeacher && completedAssessmentIds.has(asm.id);
 
               return (

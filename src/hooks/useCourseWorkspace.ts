@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTable, useDelete } from "@refinedev/core";
+import { useList, useDelete } from "@refinedev/core";
 import { CourseModule, AssessmentItem } from "@/types";
 
 interface UseCourseWorkspaceProps {
@@ -16,19 +16,50 @@ export function useCourseWorkspace({ activeSubjectId, setActivePdfUrl }: UseCour
 
   const { mutate: deleteMutate } = useDelete();
 
-  // Fetch filtered modules targeting subject_id foreign key
-  const { result: modulesResult } = useTable<CourseModule>({
-    resource: "modules",
-    filters: { permanent: [{ field: "subject_id", operator: "eq", value: activeSubjectId }] },
-  });
-  const filteredModules = modulesResult?.data ?? [];
+  // Guard query execution so it only runs when activeSubjectId is valid
+  const isQueryEnabled = Boolean(activeSubjectId) && activeSubjectId !== "";
 
-  // Fetch filtered assessments targeting subject_id foreign key
-  const { result: assessmentsResult } = useTable<AssessmentItem>({
-    resource: "assessments",
-    filters: { permanent: [{ field: "subject_id", operator: "eq", value: activeSubjectId }] },
+  // 1. Query modules using useList
+  const { result: modulesResult } = useList<CourseModule>({
+    resource: "modules",
+    filters: [
+      {
+        field: "subject_id",
+        operator: "eq",
+        value: activeSubjectId,
+      },
+    ],
+    queryOptions: {
+      enabled: isQueryEnabled,
+    },
   });
-  const filteredAssessments = assessmentsResult?.data ?? [];
+
+  // Access array under result.data
+  const rawModules = modulesResult?.data ?? [];
+  const filteredModules = rawModules.filter(
+    (mod: CourseModule) => String((mod as any).subject_id ?? mod.id) === String(activeSubjectId)
+  );
+
+  // 2. Query assessments using useList
+  const { result: assessmentsResult } = useList<AssessmentItem>({
+    resource: "assessments",
+    filters: [
+      {
+        field: "subject_id",
+        operator: "eq",
+        value: activeSubjectId,
+      },
+    ],
+    queryOptions: {
+      enabled: isQueryEnabled,
+    },
+  });
+
+  // Access array under result.data
+  const rawAssessments = assessmentsResult?.data ?? [];
+  const filteredAssessments = rawAssessments.filter(
+    (asm: AssessmentItem) => String((asm as any).subject_id ?? asm.id) === String(activeSubjectId)
+  );
 
   const handleOpenPdf = (title: string, url: string) => {
     setActivePdfTitle(title);
