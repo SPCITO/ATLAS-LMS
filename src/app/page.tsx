@@ -48,7 +48,7 @@ export default function Home() {
         {/* Hero Background Image */}
         <div className={styles.heroBgWrapper}>
           <Image
-            src="/background/green.png"
+            src="/Background/green.png"
             alt="Institutional Campus Context Background"
             fill
             priority
