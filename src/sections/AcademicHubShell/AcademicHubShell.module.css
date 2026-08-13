@@ -2,26 +2,34 @@
 .navigationContainer {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  flex: 1 1 0%;
-  min-height: 0;
-  gap: 1rem;
+  width: 100%;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .navigationContainer {
+    height: 100%;
+    flex: 1 1 0%;
+    min-height: 0;
+    gap: 1rem;
+  }
 }
 
 /* Tab Switcher Controls */
 .tabGroup {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
+  gap: 0.375rem;
   background-color: #001f0e;
   border: 1px solid rgba(6, 78, 59, 0.4);
   padding: 0.25rem;
   border-radius: 0.75rem;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .tabBtn {
-  height: 2rem;
+  height: 2.25rem; /* Slightly larger touch target for mobile fingers */
   font-weight: 700;
   font-size: 11px;
   text-transform: uppercase;
@@ -34,6 +42,7 @@
   justify-content: center;
   gap: 0.375rem;
   border: none;
+  width: 100%;
 }
 
 .tabBtnActive {
@@ -53,29 +62,39 @@
 
 /* Live Indicator Wrapper */
 .indicatorWrapper {
+  width: 100%;
   flex-shrink: 0;
 }
 
 /* Subject Selector Container */
 .subjectSelectorWrapper {
-  flex: 1 1 0%;
-  min-height: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
 
+@media (min-width: 768px) {
+  .subjectSelectorWrapper {
+    flex: 1 1 0%;
+    min-height: 0;
+  }
+}
+
 /* Workspace Layout Grid */
 .workspaceGrid {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 1.5rem;
-  height: 100%;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
 }
 
 @media (min-width: 1024px) {
   .workspaceGrid {
+    display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+    height: 100%;
+    align-items: start;
   }
 
   .courseWorkspaceCol {
@@ -88,15 +107,27 @@
 }
 
 .courseWorkspaceCol {
-  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  min-height: 0;
+}
+
+@media (min-width: 1024px) {
+  .courseWorkspaceCol {
+    height: 100%;
+    min-height: 0;
+  }
 }
 
 .evaluationCol {
-  height: 100%;
-  overflow-y: auto;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .evaluationCol {
+    height: 100%;
+    overflow-y: auto;
+  }
 }
 
 .iconSm {
