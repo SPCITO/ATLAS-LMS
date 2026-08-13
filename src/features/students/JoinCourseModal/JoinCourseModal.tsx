@@ -1,7 +1,8 @@
 // src/sections/subject-hub/JoinCourseModal.tsx
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X, UserPlus, Loader2 } from "lucide-react";
@@ -15,15 +16,26 @@ interface JoinCourseModalProps {
   onSuccess?: () => void;
 }
 
-export function JoinCourseModal({ isOpen, onClose, onSuccess }: JoinCourseModalProps) {
+export function JoinCourseModal({
+  isOpen,
+  onClose,
+  onSuccess,
+}: JoinCourseModalProps) {
+  const [mounted, setMounted] = useState(false);
+
   const { courseCode, setCourseCode, loading, joinCourse } = useJoinCourse({
     onSuccess,
     onClose,
   });
 
-  if (!isOpen) return null;
+  // Avoid Next.js SSR hydration mismatch for portal target
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  return (
+  if (!mounted || !isOpen) return null;
+
+  return createPortal(
     <div className={styles.overlay}>
       <Card className={styles.card}>
         <div className={styles.header}>
@@ -31,7 +43,12 @@ export function JoinCourseModal({ isOpen, onClose, onSuccess }: JoinCourseModalP
             <UserPlus className={styles.headerIcon} />
             <h3 className={styles.title}>Join Subject Workspace</h3>
           </div>
-          <button onClick={onClose} className={styles.closeButton} type="button" aria-label="Close modal">
+          <button
+            onClick={onClose}
+            className={styles.closeButton}
+            type="button"
+            aria-label="Close modal"
+          >
             <X className={styles.iconSm} />
           </button>
         </div>
@@ -72,6 +89,7 @@ export function JoinCourseModal({ isOpen, onClose, onSuccess }: JoinCourseModalP
           </div>
         </form>
       </Card>
-    </div>
+    </div>,
+    document.body,
   );
 }

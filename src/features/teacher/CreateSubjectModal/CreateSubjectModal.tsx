@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X, Sparkles, Loader2 } from "lucide-react";
@@ -13,7 +14,11 @@ interface CreateSubjectModalProps {
   onClose: () => void;
 }
 
-export function CreateSubjectModal({ isOpen, onClose }: CreateSubjectModalProps) {
+export function CreateSubjectModal({
+  isOpen,
+  onClose,
+}: CreateSubjectModalProps) {
+  const [mounted, setMounted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -28,7 +33,12 @@ export function CreateSubjectModal({ isOpen, onClose }: CreateSubjectModalProps)
     handleSubmit,
   } = useCreateSubjectModal({ onClose });
 
-  if (!isOpen) return null;
+  // Avoid Next.js SSR hydration mismatch for portal target
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !isOpen) return null;
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     setIsSubmitting(true);
@@ -39,7 +49,7 @@ export function CreateSubjectModal({ isOpen, onClose }: CreateSubjectModalProps)
     }
   };
 
-  return (
+  return createPortal(
     <div className={styles.overlay}>
       <Card className={styles.card}>
         {/* Header Block */}
@@ -134,7 +144,11 @@ export function CreateSubjectModal({ isOpen, onClose }: CreateSubjectModalProps)
             >
               Cancel
             </Button>
-            <Button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
+            <Button
+              type="submit"
+              className={styles.submitBtn}
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -147,6 +161,7 @@ export function CreateSubjectModal({ isOpen, onClose }: CreateSubjectModalProps)
           </div>
         </form>
       </Card>
-    </div>
+    </div>,
+    document.body,
   );
 }

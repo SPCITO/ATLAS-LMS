@@ -2,12 +2,11 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(2, 6, 23, 0.4);
-  backdrop-filter: blur(4px);
+  background-color: rgba(15, 23, 42, 0.6); /* Solid dark background overlay */
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 50;
+  z-index: 9999; /* Increased z-index so it sits above all workspace elements */
   padding: 1rem;
 }
 

@@ -1,7 +1,8 @@
 // src/sections/subject-hub/ClassRosterModal.tsx
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X, Users, Trash2, CheckCircle, Search, Loader2 } from "lucide-react";
@@ -15,7 +16,13 @@ interface ClassRosterModalProps {
   activeSubjectId: string | number;
 }
 
-export function ClassRosterModal({ isOpen, onClose, activeSubjectId }: ClassRosterModalProps) {
+export function ClassRosterModal({
+  isOpen,
+  onClose,
+  activeSubjectId,
+}: ClassRosterModalProps) {
+  const [mounted, setMounted] = useState(false);
+
   const {
     students,
     filteredStudents,
@@ -27,9 +34,14 @@ export function ClassRosterModal({ isOpen, onClose, activeSubjectId }: ClassRost
     handleRemove,
   } = useClassRoster({ isOpen, activeSubjectId });
 
-  if (!isOpen) return null;
+  // Avoid Next.js SSR hydration mismatch for portal target
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  return (
+  if (!mounted || !isOpen) return null;
+
+  return createPortal(
     <div className={styles.overlay}>
       <Card className={styles.modalCard}>
         {/* Header */}
@@ -38,7 +50,11 @@ export function ClassRosterModal({ isOpen, onClose, activeSubjectId }: ClassRost
             <Users className={styles.headerIcon} />
             <h3 className={styles.title}>Class Roster & Student Requests</h3>
           </div>
-          <button onClick={onClose} className={styles.closeButton} aria-label="Close">
+          <button
+            onClick={onClose}
+            className={styles.closeButton}
+            aria-label="Close"
+          >
             <X className={styles.closeIcon} />
           </button>
         </div>
@@ -66,8 +82,12 @@ export function ClassRosterModal({ isOpen, onClose, activeSubjectId }: ClassRost
               <div key={student.enrollment_id} className={styles.studentRow}>
                 <div className={styles.studentInfo}>
                   <div className={styles.studentHeader}>
-                    <span className={styles.studentName}>{student.full_name}</span>
-                    <span className={styles.idBadge}>ID: {student.id_number}</span>
+                    <span className={styles.studentName}>
+                      {student.full_name}
+                    </span>
+                    <span className={styles.idBadge}>
+                      ID: {student.id_number}
+                    </span>
                   </div>
                   <span className={styles.strandText}>
                     Strand/Dept: {student.course_strand}
@@ -94,7 +114,9 @@ export function ClassRosterModal({ isOpen, onClose, activeSubjectId }: ClassRost
                   <Button
                     size="icon"
                     variant="destructive"
-                    onClick={() => handleRemove(student.enrollment_id, student.full_name)}
+                    onClick={() =>
+                      handleRemove(student.enrollment_id, student.full_name)
+                    }
                     disabled={actionLoading === student.enrollment_id}
                     title="Remove Student"
                     className={styles.removeBtn}
@@ -119,6 +141,7 @@ export function ClassRosterModal({ isOpen, onClose, activeSubjectId }: ClassRost
           </Button>
         </div>
       </Card>
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useOne, useGetIdentity, useList } from "@refinedev/core";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -43,6 +44,8 @@ export function CourseWorkspace({
   activePdfUrl,
   setActivePdfUrl,
 }: CourseWorkspaceProps) {
+  const [mounted, setMounted] = useState(false);
+
   const {
     isModuleModalOpen,
     setIsModuleModalOpen,
@@ -73,6 +76,11 @@ export function CourseWorkspace({
   const [isRosterModalOpen, setIsRosterModalOpen] = useState(false);
   const [showControlsMenu, setShowControlsMenu] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
+
+  // Ensure SSR hydration safeguard for portal rendering
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Dynamic blur calculation for active modal overlays
   const isModalActive = Boolean(
@@ -134,7 +142,9 @@ export function CourseWorkspace({
 
   return (
     <div
-      className={`${styles.workspaceContainer} ${isModalActive ? styles.isBlurred : ""}`}
+      className={`${styles.workspaceContainer} ${
+        isModalActive ? styles.isBlurred : ""
+      }`}
     >
       <Tabs
         defaultValue="modules"
@@ -166,90 +176,6 @@ export function CourseWorkspace({
                 >
                   <Settings className={styles.iconSm} />
                 </Button>
-
-                {/* BACKDROP OVERLAY */}
-                {showControlsMenu && (
-                  <>
-                    <div
-                      className={styles.menuBackdrop}
-                      onClick={() => setShowControlsMenu(false)}
-                    />
-                    <div className={styles.controlsMenu}>
-                      <div className={styles.adminHeader}>
-                        <span className={styles.adminTitle}>
-                          Course Administration
-                        </span>
-                        <span className={styles.activeBadge}>Active</span>
-                      </div>
-
-                      {/* Trigger: Class Roster & Student Approvals */}
-                      <button
-                        onClick={() => {
-                          setIsRosterModalOpen(true);
-                          setShowControlsMenu(false);
-                        }}
-                        className={styles.deployButton}
-                      >
-                        <Users
-                          className={`${styles.iconSm} ${styles.textEmerald}`}
-                        />
-                        <div>
-                          <span className={styles.deployBtnTitle}>
-                            Class Roster
-                          </span>
-                          <span className={styles.deployBtnSub}>
-                            Manage & accept enrolled students
-                          </span>
-                        </div>
-                      </button>
-
-                      {/* Trigger: Deploy Subject */}
-                      <button
-                        onClick={() => {
-                          setIsSubjectModalOpen(true);
-                          setShowControlsMenu(false);
-                        }}
-                        className={styles.deployButton}
-                      >
-                        <FolderPlus
-                          className={`${styles.iconSm} ${styles.textEmerald}`}
-                        />
-                        <div>
-                          <span className={styles.deployBtnTitle}>
-                            Deploy New Subject
-                          </span>
-                          <span className={styles.deployBtnSub}>
-                            Generate setup codes for another class
-                          </span>
-                        </div>
-                      </button>
-
-                      <div className={styles.menuDivider}>
-                        {/* Copy Code */}
-                        <div className={styles.codeSection}>
-                          <span className={styles.subLabel}>
-                            <Share2 className={styles.iconXs} /> Invite Code
-                          </span>
-                          <div className={styles.codeBox}>
-                            <span className={styles.codeText}>{rawCode}</span>
-                            <button
-                              onClick={handleCopyCode}
-                              className={styles.copyBtn}
-                            >
-                              {copiedCode ? (
-                                <Check
-                                  className={`${styles.iconXs} ${styles.textEmerald}`}
-                                />
-                              ) : (
-                                <Copy className={styles.iconXs} />
-                              )}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                )}
               </div>
 
               {/* CONTEXTUAL ADD ACTION */}
@@ -410,6 +336,84 @@ export function CourseWorkspace({
           )}
         </TabsContent>
       </Tabs>
+
+      {/* PORTAL OVERLAY FOR COURSE CONTROLS MENU */}
+      {mounted &&
+        showControlsMenu &&
+        createPortal(
+          <>
+            <div
+              className={styles.menuBackdrop}
+              onClick={() => setShowControlsMenu(false)}
+            />
+            <div className={styles.controlsMenu}>
+              <div className={styles.adminHeader}>
+                <span className={styles.adminTitle}>Course Administration</span>
+                <span className={styles.activeBadge}>Active</span>
+              </div>
+
+              {/* Trigger: Class Roster & Student Approvals */}
+              <button
+                onClick={() => {
+                  setIsRosterModalOpen(true);
+                  setShowControlsMenu(false);
+                }}
+                className={styles.deployButton}
+              >
+                <Users className={`${styles.iconSm} ${styles.textEmerald}`} />
+                <div>
+                  <span className={styles.deployBtnTitle}>Class Roster</span>
+                  <span className={styles.deployBtnSub}>
+                    Manage & accept enrolled students
+                  </span>
+                </div>
+              </button>
+
+              {/* Trigger: Deploy Subject */}
+              <button
+                onClick={() => {
+                  setIsSubjectModalOpen(true);
+                  setShowControlsMenu(false);
+                }}
+                className={styles.deployButton}
+              >
+                <FolderPlus
+                  className={`${styles.iconSm} ${styles.textEmerald}`}
+                />
+                <div>
+                  <span className={styles.deployBtnTitle}>
+                    Deploy New Subject
+                  </span>
+                  <span className={styles.deployBtnSub}>
+                    Generate setup codes for another class
+                  </span>
+                </div>
+              </button>
+
+              <div className={styles.menuDivider}>
+                {/* Copy Code */}
+                <div className={styles.codeSection}>
+                  <span className={styles.subLabel}>
+                    <Share2 className={styles.iconXs} /> Invite Code
+                  </span>
+                  <div className={styles.codeBox}>
+                    <span className={styles.codeText}>{rawCode}</span>
+                    <button onClick={handleCopyCode} className={styles.copyBtn}>
+                      {copiedCode ? (
+                        <Check
+                          className={`${styles.iconXs} ${styles.textEmerald}`}
+                        />
+                      ) : (
+                        <Copy className={styles.iconXs} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>,
+          document.body,
+        )}
 
       {/* Internal Sub-Modal Nodes */}
       <PdfViewModal

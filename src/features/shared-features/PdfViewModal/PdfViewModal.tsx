@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, X, ExternalLink } from "lucide-react";
-import { useDocumentViewer } from "@/hooks/usePdfViewModal"; // Adjust import path as needed
+import { useDocumentViewer } from "@/hooks/usePdfViewModal";
 
 import styles from "@/features/shared-features/PdfViewModal/PdfViewModal.module.css";
 
@@ -16,10 +17,16 @@ interface PdfViewModalProps {
 
 export function PdfViewModal({ url, title, onClose }: PdfViewModalProps) {
   const { iframeSrc } = useDocumentViewer(url);
+  const [mounted, setMounted] = useState(false);
 
-  if (!url) return null;
+  // Prevent Next.js SSR hydration mismatches for Portal target
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  return (
+  if (!url || !mounted) return null;
+
+  return createPortal(
     <div className={styles.overlay} onClick={onClose}>
       <Card className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
         {/* Modal Header */}
@@ -57,6 +64,7 @@ export function PdfViewModal({ url, title, onClose }: PdfViewModalProps) {
           />
         </div>
       </Card>
-    </div>
+    </div>,
+    document.body,
   );
 }

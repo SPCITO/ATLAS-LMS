@@ -1,7 +1,8 @@
 // src/sections/subject-hub/CreateModuleModal.tsx
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { UploadCloud, FileText, Trash2, Layers, Loader2 } from "lucide-react";
@@ -15,7 +16,13 @@ interface CreateModuleModalProps {
   activeSubjectId: string | number;
 }
 
-export function CreateModuleModal({ isOpen, onClose, activeSubjectId }: CreateModuleModalProps) {
+export function CreateModuleModal({
+  isOpen,
+  onClose,
+  activeSubjectId,
+}: CreateModuleModalProps) {
+  const [mounted, setMounted] = useState(false);
+
   const {
     selectedFiles,
     isUploading,
@@ -27,9 +34,14 @@ export function CreateModuleModal({ isOpen, onClose, activeSubjectId }: CreateMo
     triggerFileInput,
   } = useCreateModule({ activeSubjectId, onClose });
 
-  if (!isOpen) return null;
+  // Prevent Next.js SSR hydration mismatch for portal target
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  return (
+  if (!mounted || !isOpen) return null;
+
+  return createPortal(
     <div className={styles.overlay}>
       <Card className={styles.modalCard}>
         {/* Header Node */}
@@ -37,9 +49,7 @@ export function CreateModuleModal({ isOpen, onClose, activeSubjectId }: CreateMo
           <div className={styles.iconWrapper}>
             <Layers className={styles.iconSm} />
           </div>
-          <h3 className={styles.title}>
-            Upload Target Module Node
-          </h3>
+          <h3 className={styles.title}>Upload Target Module Node</h3>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -48,25 +58,23 @@ export function CreateModuleModal({ isOpen, onClose, activeSubjectId }: CreateMo
             <label className={styles.label}>
               Academic Documents (One-to-Many Selection)
             </label>
-            
+
             <button
               type="button"
               onClick={triggerFileInput}
               disabled={isUploading}
               className={styles.dropzone}
             >
-              <input 
+              <input
                 ref={fileInputRef}
-                type="file" 
-                multiple 
+                type="file"
+                multiple
                 accept=".pdf,.doc,.docx,.ppt,.pptx"
-                onChange={handleFileChange} 
-                className={styles.hiddenInput} 
+                onChange={handleFileChange}
+                className={styles.hiddenInput}
               />
               <UploadCloud className={styles.uploadIcon} />
-              <span className={styles.dropzoneTitle}>
-                Choose Module Files
-              </span>
+              <span className={styles.dropzoneTitle}>Choose Module Files</span>
               <span className={styles.dropzoneSub}>
                 PDF, PPT, DOC up to many instances
               </span>
@@ -102,20 +110,20 @@ export function CreateModuleModal({ isOpen, onClose, activeSubjectId }: CreateMo
 
           {/* Dialog Action Buttons footer */}
           <div className={styles.footerActions}>
-            <Button 
-              type="button" 
-              variant="ghost" 
+            <Button
+              type="button"
+              variant="ghost"
               disabled={isUploading}
               onClick={() => {
                 clearSelection();
                 onClose();
-              }} 
+              }}
               className={styles.cancelBtn}
             >
               Cancel
             </Button>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={selectedFiles.length === 0 || isUploading}
               className={styles.deployBtn}
             >
@@ -130,6 +138,7 @@ export function CreateModuleModal({ isOpen, onClose, activeSubjectId }: CreateMo
           </div>
         </form>
       </Card>
-    </div>
+    </div>,
+    document.body,
   );
 }

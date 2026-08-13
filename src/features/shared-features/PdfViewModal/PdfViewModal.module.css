@@ -1,16 +1,15 @@
 /* Container & Overlay */
 .overlay {
   position: fixed;
-  inset: 0;
-  background-color: rgba(2, 6, 23, 0.6);
-  backdrop-filter: blur(12px);
+  inset: 0; /* top: 0, right: 0, bottom: 0, left: 0 */
+  z-index: 9999; /* Higher than .canvas (z-index: 10) */
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 50;
   padding: 1rem;
 }
-
 @media (min-width: 768px) {
   .overlay {
     padding: 1.5rem;

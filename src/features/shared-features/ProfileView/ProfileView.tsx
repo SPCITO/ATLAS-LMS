@@ -1,21 +1,27 @@
 "use client";
 
 import React from "react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-  User, 
-  Shield, 
-  KeyRound, 
-  Layers, 
-  GraduationCap, 
-  CheckCircle2, 
-  Loader2, 
-  LogOut, 
+import {
+  User,
+  Shield,
+  KeyRound,
+  Layers,
+  GraduationCap,
+  CheckCircle2,
+  Loader2,
+  LogOut,
   Building2,
   Mail,
   Fingerprint,
-  Sparkles
+  Sparkles,
 } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
 import { PROFILE_CONTENT } from "@/data/profileData";
@@ -61,7 +67,9 @@ export function ProfileView() {
   if (isLoading) {
     return (
       <div className={styles.loadingContainer}>
-        <Loader2 className={`${styles.iconMd} ${styles.spin} text-emerald-600`} />
+        <Loader2
+          className={`${styles.iconMd} ${styles.spin} text-emerald-600`}
+        />
         <span>{PROFILE_CONTENT.loading.synchronizingText}</span>
       </div>
     );
@@ -74,7 +82,7 @@ export function ProfileView() {
         <div className={styles.heroBanner}>
           <div className={styles.heroOverlay} />
         </div>
-        
+
         <CardContent className={styles.heroContent}>
           <div className={styles.userHeaderRow}>
             <div className={styles.userInfoGroup}>
@@ -82,19 +90,23 @@ export function ProfileView() {
                 <div className={styles.avatar}>
                   <User className={styles.iconLg} />
                 </div>
-                <div className={styles.avatarOnlineDot} title="Account Active" />
+                <div
+                  className={styles.avatarOnlineDot}
+                  title="Account Active"
+                />
               </div>
-              
+
               <div className="space-y-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className={`${styles.roleBadge} ${isFaculty ? styles.roleBadgeFaculty : styles.roleBadgeStudent}`}>
-                    <Sparkles className="w-3 h-3" />
-                    {isFaculty ? PROFILE_CONTENT.roles.faculty : PROFILE_CONTENT.roles.student}
+                  <span
+                    className={`${styles.roleBadge} ${isFaculty ? styles.roleBadgeFaculty : styles.roleBadgeStudent}`}
+                  >
+                    {isFaculty
+                      ? PROFILE_CONTENT.roles.faculty
+                      : PROFILE_CONTENT.roles.student}
                   </span>
                 </div>
-                <h2 className={styles.userName}>
-                  {userDisplayName}
-                </h2>
+                <h2 className={styles.userName}>{userDisplayName}</h2>
               </div>
             </div>
 
@@ -133,7 +145,7 @@ export function ProfileView() {
                 </label>
                 <span className={styles.fieldValueMono}>{accountId}</span>
               </div>
-              
+
               <div className={styles.dataTile}>
                 <label className={styles.fieldLabel}>
                   <Mail className="w-3 h-3 inline mr-1 text-slate-400" />
@@ -185,13 +197,15 @@ export function ProfileView() {
                     {PROFILE_CONTENT.securityConfig.notice}
                   </p>
                 </div>
-                
-                <Button 
-                  type="submit" 
+
+                <Button
+                  type="submit"
                   disabled={isSubmittingPassword}
                   className={styles.resetBtn}
                 >
-                  {isSubmittingPassword && <Loader2 className={`${styles.iconSm} ${styles.spin}`} />}
+                  {isSubmittingPassword && (
+                    <Loader2 className={`${styles.iconSm} ${styles.spin}`} />
+                  )}
                   {PROFILE_CONTENT.actions.resetBtn}
                 </Button>
               </form>

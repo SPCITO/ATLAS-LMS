@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AssessmentItem } from "@/types";
@@ -20,16 +21,23 @@ export function TeacherAssessmentReviewModal({
   onClose,
   assessment,
 }: TeacherAssessmentReviewModalProps) {
+  const [mounted, setMounted] = useState(false);
+
   const { submissions, isLoading, copied, handleCopyGrades } =
     useTeacherAssessmentReview({
       isOpen,
       assessment,
     });
 
-  // Early return AFTER all hooks execute
-  if (!isOpen || !assessment) return null;
+  // Prevent SSR hydration mismatch for portal target
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  return (
+  // Early return AFTER all hooks execute
+  if (!mounted || !isOpen || !assessment) return null;
+
+  return createPortal(
     <div className={styles.reviewOverlay}>
       <Card className={styles.reviewCard}>
         {/* Header */}
@@ -110,7 +118,8 @@ export function TeacherAssessmentReviewModal({
                   </div>
 
                   <span className={styles.badgeSuccess}>
-                    Score: {sub.score} / {sub.totalQuestions} ({sub.percentage}%)
+                    Score: {sub.score} / {sub.totalQuestions} ({sub.percentage}
+                    %)
                   </span>
                 </div>
                 <p className={styles.submittedDate}>
@@ -128,6 +137,7 @@ export function TeacherAssessmentReviewModal({
           </Button>
         </div>
       </Card>
-    </div>
+    </div>,
+    document.body,
   );
 }

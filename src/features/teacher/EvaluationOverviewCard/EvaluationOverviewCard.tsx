@@ -1,8 +1,21 @@
 "use client";
-//THIS IS VACANT FOR NOT THIS COMPONENT IS NOT BEING USED FOR NOW  @RESERVE FOR FUTURE USE CASES
+
 import React, { useState } from "react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Users, CheckCircle } from "lucide-react";
@@ -11,7 +24,7 @@ import { AssessmentItem } from "@/types";
 import { TeacherAssessmentReviewModal } from "../TeacherAssessmentReviewModal/TeacherAssessmentReviewModal";
 import { StudentAssessmentModal } from "../../students/StudentAssessmentModal/StudentAssessmentModal";
 
-import styles from "@/features/teacher/EvaluationOverviewCard/EvaluationOverviewCard.module.css"; // Scoped CSS module for EvaluationOverviewCard
+import styles from "@/features/teacher/EvaluationOverviewCard/EvaluationOverviewCard.module.css";
 
 // 1. EVALUATIONS TAB COMPONENT
 interface EvaluationsTabProps {
@@ -19,7 +32,10 @@ interface EvaluationsTabProps {
   onLaunchTask: (assessment: any) => void;
 }
 
-export function EvaluationsTab({ assessments, onLaunchTask }: EvaluationsTabProps) {
+export function EvaluationsTab({
+  assessments,
+  onLaunchTask,
+}: EvaluationsTabProps) {
   const { data: user } = useGetIdentity<{ id?: string; sub?: string }>();
   const studentId = user?.id || user?.sub;
 
@@ -39,7 +55,7 @@ export function EvaluationsTab({ assessments, onLaunchTask }: EvaluationsTabProp
 
   const submissions = submissionsQuery?.data?.data ?? [];
   const submittedAssessmentIds = new Set(
-    submissions.map((sub: any) => String(sub.assessment_id))
+    submissions.map((sub: any) => String(sub.assessment_id)),
   );
 
   return (
@@ -91,7 +107,9 @@ interface EvaluationOverviewCardProps {
   isTeacher: boolean;
 }
 
-export function EvaluationOverviewCard({ isTeacher }: EvaluationOverviewCardProps) {
+export function EvaluationOverviewCard({
+  isTeacher,
+}: EvaluationOverviewCardProps) {
   const { data: user } = useGetIdentity<{ id?: string; sub?: string }>();
   const studentId = user?.id || user?.sub;
 
@@ -115,10 +133,11 @@ export function EvaluationOverviewCard({ isTeacher }: EvaluationOverviewCardProp
 
   const submissions = submissionsQuery?.data?.data ?? [];
   const submittedAssessmentIds = new Set(
-    submissions.map((sub: any) => String(sub.assessment_id))
+    submissions.map((sub: any) => String(sub.assessment_id)),
   );
 
-  const [selectedAssessment, setSelectedAssessment] = useState<AssessmentItem | null>(null);
+  const [selectedAssessment, setSelectedAssessment] =
+    useState<AssessmentItem | null>(null);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
 
@@ -157,7 +176,11 @@ export function EvaluationOverviewCard({ isTeacher }: EvaluationOverviewCardProp
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className={isTeacher ? styles.thTeacherCol : styles.thStudentCol}>
+                  <TableHead
+                    className={
+                      isTeacher ? styles.thTeacherCol : styles.thStudentCol
+                    }
+                  >
                     {isTeacher ? "Assessment Node" : "Task Title"}
                   </TableHead>
                   {isTeacher ? (
@@ -175,7 +198,9 @@ export function EvaluationOverviewCard({ isTeacher }: EvaluationOverviewCardProp
               </TableHeader>
               <TableBody>
                 {assessments.map((task) => {
-                  const isCompleted = submittedAssessmentIds.has(String(task.id));
+                  const isCompleted = submittedAssessmentIds.has(
+                    String(task.id),
+                  );
 
                   return (
                     <TableRow key={task.id} className={styles.tableRow}>
@@ -204,7 +229,13 @@ export function EvaluationOverviewCard({ isTeacher }: EvaluationOverviewCardProp
                       ) : (
                         <>
                           <TableCell>
-                            <Badge variant={Number(task.id) % 2 === 0 ? "default" : "secondary"}>
+                            <Badge
+                              variant={
+                                Number(task.id) % 2 === 0
+                                  ? "default"
+                                  : "secondary"
+                              }
+                            >
                               Node-{task.id}
                             </Badge>
                           </TableCell>
@@ -234,6 +265,7 @@ export function EvaluationOverviewCard({ isTeacher }: EvaluationOverviewCardProp
         </CardContent>
       </Card>
 
+      {/* Rendered directly into document.body via Portal inside TeacherAssessmentReviewModal */}
       <TeacherAssessmentReviewModal
         isOpen={isReviewOpen}
         onClose={() => {
@@ -243,6 +275,7 @@ export function EvaluationOverviewCard({ isTeacher }: EvaluationOverviewCardProp
         assessment={selectedAssessment}
       />
 
+      {/* Rendered directly into document.body via Portal inside StudentAssessmentModal */}
       <StudentAssessmentModal
         isOpen={isStudentModalOpen}
         onClose={() => {

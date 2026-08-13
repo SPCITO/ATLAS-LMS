@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, X, ChevronRight, Loader2 } from "lucide-react";
-import { useStudentAssessment } from "@/hooks/useStudentAssessment"; // Adjust import path as needed
+import { useStudentAssessment } from "@/hooks/useStudentAssessment";
 
 import styles from "@/features/students/StudentAssessmentModal/StudentAssessmentModal.module.css";
 
@@ -19,6 +20,8 @@ export function StudentAssessmentModal({
   onClose,
   assessment,
 }: StudentAssessmentModalProps) {
+  const [mounted, setMounted] = useState(false);
+
   const {
     currentQuestionIndex,
     currentQuestion,
@@ -33,12 +36,37 @@ export function StudentAssessmentModal({
     handleModalClose,
   } = useStudentAssessment({ isOpen, assessment, onClose });
 
+  // Prevent SSR hydration mismatch for portal target
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Safeguard: If student has already submitted this test, close the modal immediately
+  useEffect(() => {
+    if (isOpen && hasAlreadySubmitted) {
+      onClose();
+    }
+  }, [isOpen, hasAlreadySubmitted, onClose]);
+
+  const handleDismiss = () => {
+    if (handleModalClose) {
+      handleModalClose();
+    }
+    onClose(); // Reset isStudentTestOpen state in CourseWorkspace
+  };
+
   // Early return after hook execution
-  if (!isOpen || !assessment || !assessment.questions || hasAlreadySubmitted) {
+  if (
+    !mounted ||
+    !isOpen ||
+    !assessment ||
+    !assessment.questions ||
+    hasAlreadySubmitted
+  ) {
     return null;
   }
 
-  return (
+  return createPortal(
     <div className={styles.overlay}>
       <Card className={styles.modalCard}>
         <div className={styles.header}>
@@ -50,7 +78,7 @@ export function StudentAssessmentModal({
           </div>
           {!isSubmitted && (
             <button
-              onClick={handleModalClose}
+              onClick={handleDismiss}
               className={styles.closeBtn}
               type="button"
             >
@@ -179,7 +207,8 @@ export function StudentAssessmentModal({
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />{" "}
+                  Submitting...
                 </>
               ) : currentQuestionIndex === questions.length - 1 ? (
                 "Submit Analytics"
@@ -189,12 +218,13 @@ export function StudentAssessmentModal({
               {!isSubmitting && <ChevronRight className={styles.iconXs} />}
             </Button>
           ) : (
-            <Button onClick={handleModalClose} className={styles.exitBtn}>
+            <Button onClick={handleDismiss} className={styles.exitBtn}>
               Exit Layout Window
             </Button>
           )}
         </div>
       </Card>
-    </div>
+    </div>,
+    document.body,
   );
 }

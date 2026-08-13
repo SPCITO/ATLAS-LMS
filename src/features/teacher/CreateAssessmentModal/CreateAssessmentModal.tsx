@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Plus, Trash2, X } from "lucide-react";
@@ -19,6 +20,8 @@ export function CreateAssessmentModal({
   onClose,
   activeSubjectId,
 }: CreateAssessmentModalProps) {
+  const [mounted, setMounted] = useState(false);
+
   const {
     title,
     setTitle,
@@ -37,9 +40,15 @@ export function CreateAssessmentModal({
     updateCorrectAnswer,
   } = useCreateAssessmentModal({ activeSubjectId, onClose });
 
-  if (!isOpen) return null;
+  // Prevent Next.js SSR hydration mismatch for portal target
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  return (
+  // Early return AFTER all hooks execute
+  if (!mounted || !isOpen) return null;
+
+  return createPortal(
     <div className={styles.overlay}>
       <Card className={styles.modalCard}>
         {/* Header Block */}
@@ -135,7 +144,9 @@ export function CreateAssessmentModal({
                 </div>
 
                 <div className={styles.fieldGroup}>
-                  <label className={styles.subLabel}>Question Prompt Context</label>
+                  <label className={styles.subLabel}>
+                    Question Prompt Context
+                  </label>
                   <input
                     required
                     type="text"
@@ -162,7 +173,7 @@ export function CreateAssessmentModal({
                             updateOptionText(index, optIdx, e.target.value)
                           }
                           placeholder={`Option Matrix Choice ${String.fromCharCode(
-                            65 + optIdx
+                            65 + optIdx,
                           )}`}
                           className={`${styles.textInput} ${styles.optionInput}`}
                         />
@@ -172,11 +183,15 @@ export function CreateAssessmentModal({
                 )}
 
                 <div className={styles.fieldGroup}>
-                  <label className={styles.subLabel}>Target Correct Answer Key</label>
+                  <label className={styles.subLabel}>
+                    Target Correct Answer Key
+                  </label>
                   {category === "True or False" ? (
                     <select
                       value={q.correctAnswer}
-                      onChange={(e) => updateCorrectAnswer(index, e.target.value)}
+                      onChange={(e) =>
+                        updateCorrectAnswer(index, e.target.value)
+                      }
                       className={`${styles.selectInput} ${styles.nodeInput}`}
                     >
                       <option value="True">True</option>
@@ -187,7 +202,9 @@ export function CreateAssessmentModal({
                       required
                       type="text"
                       value={q.correctAnswer}
-                      onChange={(e) => updateCorrectAnswer(index, e.target.value)}
+                      onChange={(e) =>
+                        updateCorrectAnswer(index, e.target.value)
+                      }
                       placeholder={
                         category === "Multiple Choice"
                           ? "Must match one option choice above"
@@ -221,6 +238,7 @@ export function CreateAssessmentModal({
           </div>
         </form>
       </Card>
-    </div>
+    </div>,
+    document.body,
   );
 }
