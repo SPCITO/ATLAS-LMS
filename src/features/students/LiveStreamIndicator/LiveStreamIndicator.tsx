@@ -3,17 +3,20 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Video, Radio, Link2 } from "lucide-react";
+import { Video, Radio, Link2, VideoOff } from "lucide-react";
 import { useLiveStream } from "@/hooks/useLiveStream";
 
-import styles from "@/features/students/LiveStreamIndicator/LiveStreamIndicator.module.css"; // Scoped CSS module for LiveStreamIndicator
+import styles from "@/features/students/LiveStreamIndicator/LiveStreamIndicator.module.css";
 
 interface LiveStreamIndicatorProps {
   isTeacher: boolean;
   activeSubjectId: string | number;
 }
 
-export function LiveStreamIndicator({ isTeacher = false, activeSubjectId }: LiveStreamIndicatorProps) {
+export function LiveStreamIndicator({
+  isTeacher = false,
+  activeSubjectId,
+}: LiveStreamIndicatorProps) {
   const {
     inputUrl,
     setInputUrl,
@@ -36,40 +39,30 @@ export function LiveStreamIndicator({ isTeacher = false, activeSubjectId }: Live
   const hasActiveLink = Boolean(activeMeetingUrl);
 
   return (
-    <Card 
+    <Card
       className={`${styles.card} ${
         hasActiveLink ? styles.cardActive : styles.cardInactive
       }`}
     >
-      <CardHeader>
+      <CardHeader className={styles.cardHeader}>
         <CardTitle className={styles.headerTitle}>
-          <Radio 
+          <Radio
             className={`${styles.radioIcon} ${
               hasActiveLink ? styles.pulse : styles.radioIconInactive
-            }`} 
+            }`}
           />
-          Live Lecture Telemetry ({currentSubject?.code ?? "N/A"})
+          ({currentSubject?.code ?? "N/A"})
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className={styles.cardContent}>
         {!isTeacher ? (
           /* Student Display Panel */
           <div className={styles.studentPanel}>
-            <div>
-              <h4 className={styles.panelTitle}>
-                {hasActiveLink ? "Sync Coordinate Active" : "No Active Stream Tracked"}
-              </h4>
-              <p className={styles.panelDescription}>
-                {hasActiveLink 
-                  ? `Instructor streaming session for ${currentSubject?.title ?? "this subject"}` 
-                  : "Standby for the instructor to broadcast the stream coordinates."}
-              </p>
-            </div>
-            {hasActiveLink && (
-              <a 
-                href={activeMeetingUrl} 
-                target="_blank" 
-                rel="noreferrer" 
+            {hasActiveLink ? (
+              <a
+                href={activeMeetingUrl}
+                target="_blank"
+                rel="noreferrer"
                 className={styles.linkWrapper}
               >
                 <Button className={styles.joinBtn}>
@@ -77,23 +70,35 @@ export function LiveStreamIndicator({ isTeacher = false, activeSubjectId }: Live
                   Join Lecture
                 </Button>
               </a>
+            ) : (
+              <Button
+                disabled
+                className={`${styles.joinBtn} ${styles.disabledBtn}`}
+              >
+                <VideoOff className={styles.iconSm} />
+                No Video Room Link Found
+              </Button>
             )}
           </div>
         ) : (
-          /* Teacher Control Form Matrix */
+          /* Teacher Control Form */
           <form onSubmit={handleUrlUpdate} className={styles.form}>
             <div className={styles.inputWrapper}>
               <Link2 className={styles.inputIcon} />
               <input
                 type="url"
-                placeholder="Paste dynamic stream meeting link (Zoom / Google Meet)..."
+                placeholder="Paste dynamic stream meeting link..."
                 value={inputUrl}
                 onChange={(e) => setInputUrl(e.target.value)}
                 className={styles.textInput}
               />
             </div>
             {urlError && <p className={styles.errorMessage}>{urlError}</p>}
-            <Button type="submit" disabled={isUpdating} className={styles.submitBtn}>
+            <Button
+              type="submit"
+              disabled={isUpdating}
+              className={styles.submitBtn}
+            >
               {isUpdating ? "Broadcasting..." : "Broadcast Updated Coordinates"}
             </Button>
           </form>

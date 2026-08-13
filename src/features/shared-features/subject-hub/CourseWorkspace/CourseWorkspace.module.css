@@ -5,13 +5,16 @@
   width: 100%;
   flex: 1;
   min-height: 0;
-  transition: filter 0.2s ease, opacity 0.2s ease;
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease;
 }
 
-/* Darkens and subtly dims the background content when a modal is active */
+/* Dynamically applied when any modal or control dropdown is open */
 .isBlurred {
-  filter: brightness(0.65) blur(1px);
-  pointer-events: none; /* Prevents clicks on background content while active */
+  filter: brightness(0.7) blur(2px);
+  pointer-events: none;
+  user-select: none;
 }
 
 .tabsRoot {
@@ -22,7 +25,9 @@
   background-color: #ffffff;
   border: 1px solid rgba(226, 232, 240, 0.8);
   border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   overflow: hidden;
 }
 
@@ -54,7 +59,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  -webkit-overflow-scrolling: touch; 
+  -webkit-overflow-scrolling: touch;
 }
 
 .tabsNavWrapper::-webkit-scrollbar {
@@ -75,6 +80,20 @@
   padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
   cursor: pointer;
+  color: #64748b;
+  transition: all 0.15s ease;
+  background: transparent;
+  border: none;
+}
+
+/* Active tab state for Radix/Shadcn Tabs */
+.tabsTrigger[data-state="active"],
+.tabsTrigger:global(.active) {
+  background-color: #ffffff;
+  color: #0f172a;
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 @media (min-width: 768px) {
@@ -117,6 +136,7 @@
   justify-content: center;
   cursor: pointer;
   border: 1px solid rgba(226, 232, 240, 0.6);
+  transition: background-color 0.15s ease;
 }
 
 .settingsButton:hover {
@@ -128,9 +148,9 @@
   position: fixed;
   inset: 0;
   z-index: 40;
-  background-color: rgba(0, 0, 0, 0.6); /* Darkened screen overlay */
-  backdrop-filter: blur(6px);            /* Enhanced blur background */
-  -webkit-backdrop-filter: blur(6px);    /* Safari support */
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   transition: opacity 0.2s ease-in-out;
 }
 
@@ -141,11 +161,13 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
-  max-width: 22rem; /* Mobile default */
+  max-width: 22rem;
   margin: 0;
   background-color: #ffffff;
   border: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.25),
+    0 10px 10px -5px rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   padding: 1rem;
   z-index: 50;
@@ -155,7 +177,6 @@
   text-align: left;
 }
 
-/* Expanded sizing for PC / Desktop viewports */
 @media (min-width: 640px) {
   .controlsMenu {
     width: 28rem;
@@ -284,6 +305,9 @@
   border: none;
   cursor: pointer;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .copyBtn:hover {
@@ -417,6 +441,7 @@
     flex-shrink: 0;
   }
 }
+
 .viewDocBtn {
   flex: 1;
   height: 2rem;
@@ -448,7 +473,6 @@
   background-color: #f8fafc;
 }
 
-/* Matching Delete Button for Modules */
 .deleteModuleBtn {
   flex-shrink: 0;
   height: 2rem;

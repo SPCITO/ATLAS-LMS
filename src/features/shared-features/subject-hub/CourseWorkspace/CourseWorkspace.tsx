@@ -4,18 +4,18 @@ import React, { useState, useMemo } from "react";
 import { useOne, useGetIdentity, useList } from "@refinedev/core";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { 
-  FileText, 
-  Eye, 
-  Plus, 
-  Calendar, 
-  FolderPlus, 
-  Settings, 
-  Copy, 
-  Check, 
+import {
+  FileText,
+  Eye,
+  Plus,
+  Calendar,
+  FolderPlus,
+  Settings,
+  Copy,
+  Check,
   Share2,
   Trash2,
-  Users
+  Users,
 } from "lucide-react";
 
 import { useCourseWorkspace } from "@/hooks/useCourseWorkspace";
@@ -37,11 +37,11 @@ interface CourseWorkspaceProps {
   setActivePdfUrl: (url: string | null) => void;
 }
 
-export function CourseWorkspace({ 
-  activeSubjectId, 
-  isTeacher, 
-  activePdfUrl, 
-  setActivePdfUrl 
+export function CourseWorkspace({
+  activeSubjectId,
+  isTeacher,
+  activePdfUrl,
+  setActivePdfUrl,
 }: CourseWorkspaceProps) {
   const {
     isModuleModalOpen,
@@ -64,7 +64,8 @@ export function CourseWorkspace({
   const [isStudentTestOpen, setIsStudentTestOpen] = useState(false);
 
   // Interactive Teacher Review State
-  const [selectedReviewAssessment, setSelectedReviewAssessment] = useState<any>(null);
+  const [selectedReviewAssessment, setSelectedReviewAssessment] =
+    useState<any>(null);
   const [isTeacherReviewOpen, setIsTeacherReviewOpen] = useState(false);
 
   // Modal & Dropdown Control States
@@ -72,6 +73,18 @@ export function CourseWorkspace({
   const [isRosterModalOpen, setIsRosterModalOpen] = useState(false);
   const [showControlsMenu, setShowControlsMenu] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
+
+  // Dynamic blur calculation for active modal overlays
+  const isModalActive = Boolean(
+    showControlsMenu ||
+    isModuleModalOpen ||
+    isAssessmentModalOpen ||
+    isSubjectModalOpen ||
+    isStudentTestOpen ||
+    isTeacherReviewOpen ||
+    isRosterModalOpen ||
+    activePdfUrl,
+  );
 
   // Identity state for student verification
   const { data: user } = useGetIdentity<any>();
@@ -97,9 +110,7 @@ export function CourseWorkspace({
     const list = submissionsResult?.data;
     if (!list) return new Set();
     return new Set(
-      list.map(
-        (sub: any) => sub.assessment_id || sub.assessmentId
-      )
+      list.map((sub: any) => sub.assessment_id || sub.assessmentId),
     );
   }, [submissionsResult?.data]);
 
@@ -112,7 +123,8 @@ export function CourseWorkspace({
   });
 
   const subject = query.data?.data;
-  const rawCode = (subject as any)?.course_code || (subject as any)?.code || "PENDING-CODE";
+  const rawCode =
+    (subject as any)?.course_code || (subject as any)?.code || "PENDING-CODE";
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(rawCode);
@@ -121,16 +133,16 @@ export function CourseWorkspace({
   };
 
   return (
-    <div className={styles.workspaceContainer}>
-      <Tabs 
-        defaultValue="modules" 
+    <div
+      className={`${styles.workspaceContainer} ${isModalActive ? styles.isBlurred : ""}`}
+    >
+      <Tabs
+        defaultValue="modules"
         onValueChange={setActiveTab}
         className={styles.tabsRoot}
       >
-        
         {/* HEADER BLOCK */}
         <div className={styles.headerBlock}>
-          
           {/* Tabs Navigation */}
           <div className={styles.tabsNavWrapper}>
             <TabsList className={styles.tabsList}>
@@ -145,10 +157,9 @@ export function CourseWorkspace({
 
           {isTeacher && (
             <div className={styles.teacherControls}>
-              
               {/* CONSOLIDATED COURSE CONTROLS DROPDOWN */}
               <div className={styles.controlsDropdownContainer}>
-                <Button 
+                <Button
                   onClick={() => setShowControlsMenu(!showControlsMenu)}
                   className={styles.settingsButton}
                   title="Course Controls"
@@ -159,13 +170,15 @@ export function CourseWorkspace({
                 {/* BACKDROP OVERLAY */}
                 {showControlsMenu && (
                   <>
-                    <div 
-                      className={styles.menuBackdrop} 
-                      onClick={() => setShowControlsMenu(false)} 
+                    <div
+                      className={styles.menuBackdrop}
+                      onClick={() => setShowControlsMenu(false)}
                     />
                     <div className={styles.controlsMenu}>
                       <div className={styles.adminHeader}>
-                        <span className={styles.adminTitle}>Course Administration</span>
+                        <span className={styles.adminTitle}>
+                          Course Administration
+                        </span>
                         <span className={styles.activeBadge}>Active</span>
                       </div>
 
@@ -177,10 +190,16 @@ export function CourseWorkspace({
                         }}
                         className={styles.deployButton}
                       >
-                        <Users className={`${styles.iconSm} ${styles.textEmerald}`} />
+                        <Users
+                          className={`${styles.iconSm} ${styles.textEmerald}`}
+                        />
                         <div>
-                          <span className={styles.deployBtnTitle}>Class Roster</span>
-                          <span className={styles.deployBtnSub}>Manage & accept enrolled students</span>
+                          <span className={styles.deployBtnTitle}>
+                            Class Roster
+                          </span>
+                          <span className={styles.deployBtnSub}>
+                            Manage & accept enrolled students
+                          </span>
                         </div>
                       </button>
 
@@ -192,10 +211,16 @@ export function CourseWorkspace({
                         }}
                         className={styles.deployButton}
                       >
-                        <FolderPlus className={`${styles.iconSm} ${styles.textEmerald}`} />
+                        <FolderPlus
+                          className={`${styles.iconSm} ${styles.textEmerald}`}
+                        />
                         <div>
-                          <span className={styles.deployBtnTitle}>Deploy New Subject</span>
-                          <span className={styles.deployBtnSub}>Generate setup codes for another class</span>
+                          <span className={styles.deployBtnTitle}>
+                            Deploy New Subject
+                          </span>
+                          <span className={styles.deployBtnSub}>
+                            Generate setup codes for another class
+                          </span>
                         </div>
                       </button>
 
@@ -207,8 +232,17 @@ export function CourseWorkspace({
                           </span>
                           <div className={styles.codeBox}>
                             <span className={styles.codeText}>{rawCode}</span>
-                            <button onClick={handleCopyCode} className={styles.copyBtn}>
-                              {copiedCode ? <Check className={`${styles.iconXs} ${styles.textEmerald}`} /> : <Copy className={styles.iconXs} />}
+                            <button
+                              onClick={handleCopyCode}
+                              className={styles.copyBtn}
+                            >
+                              {copiedCode ? (
+                                <Check
+                                  className={`${styles.iconXs} ${styles.textEmerald}`}
+                                />
+                              ) : (
+                                <Copy className={styles.iconXs} />
+                              )}
                             </button>
                           </div>
                         </div>
@@ -220,21 +254,20 @@ export function CourseWorkspace({
 
               {/* CONTEXTUAL ADD ACTION */}
               {activeTab === "modules" ? (
-                <Button 
-                  onClick={() => setIsModuleModalOpen(true)} 
+                <Button
+                  onClick={() => setIsModuleModalOpen(true)}
                   className={`${styles.actionButton} ${styles.addModuleBtn}`}
                 >
                   <Plus className={styles.iconSm} /> Add Module
                 </Button>
               ) : (
-                <Button 
-                  onClick={() => setIsAssessmentModalOpen(true)} 
+                <Button
+                  onClick={() => setIsAssessmentModalOpen(true)}
                   className={`${styles.actionButton} ${styles.addTaskBtn}`}
                 >
                   <Plus className={styles.iconSm} /> Add Task
                 </Button>
               )}
-
             </div>
           )}
         </div>
@@ -243,11 +276,11 @@ export function CourseWorkspace({
         <TabsContent value="modules" className={styles.tabContentArea}>
           {filteredModules.length > 0 ? (
             filteredModules.map((mod: CourseModule) => {
-              const targetUrl = 
-                mod.fileUrl || 
-                (mod as any).file_url || 
-                (mod as any).url || 
-                (mod as any).pdf_url || 
+              const targetUrl =
+                mod.fileUrl ||
+                (mod as any).file_url ||
+                (mod as any).url ||
+                (mod as any).pdf_url ||
                 "";
 
               return (
@@ -258,16 +291,16 @@ export function CourseWorkspace({
                     </div>
                     <span className={styles.moduleTitle}>{mod.title}</span>
                   </div>
-                  <div className={styles.moduleActions || "flex items-center gap-2"}>
-                    <Button 
-                      variant="outline" 
+                  <div className={styles.moduleActions}>
+                    <Button
+                      variant="outline"
                       onClick={() => {
                         if (!targetUrl) {
                           alert("No PDF URL found for this module.");
                           return;
                         }
                         handleOpenPdf(mod.title, targetUrl);
-                      }} 
+                      }}
                       className={styles.viewDocBtn}
                     >
                       <Eye className={styles.iconSm} /> View Document
@@ -277,7 +310,7 @@ export function CourseWorkspace({
                       <Button
                         variant="destructive"
                         size="icon"
-                        className={styles.deleteAssessmentBtn}
+                        className={styles.deleteModuleBtn}
                         onClick={() => handleDeleteModule(mod.id)}
                         title="Delete Module"
                       >
@@ -302,15 +335,20 @@ export function CourseWorkspace({
         <TabsContent value="assessments" className={styles.tabContentArea}>
           {filteredAssessments.length > 0 ? (
             filteredAssessments.map((asm: AssessmentItem) => {
-              const isSubmitted = !isTeacher && completedAssessmentIds.has(asm.id);
+              const isSubmitted =
+                !isTeacher && completedAssessmentIds.has(asm.id);
 
               return (
                 <div key={asm.id} className={styles.assessmentCard}>
                   <div className={styles.assessmentInfo}>
                     <div className={styles.assessmentTags}>
-                      <span className={`${styles.typeBadge} ${
-                        asm.type === "Exam" ? styles.badgeExam : styles.badgeAssignment
-                      }`}>
+                      <span
+                        className={`${styles.typeBadge} ${
+                          asm.type === "Exam"
+                            ? styles.badgeExam
+                            : styles.badgeAssignment
+                        }`}
+                      >
                         {asm.type}
                       </span>
                       {(asm as any).category && (
@@ -321,13 +359,13 @@ export function CourseWorkspace({
                       <h4 className={styles.assessmentHeading}>{asm.title}</h4>
                     </div>
                     <p className={styles.dueDateText}>
-                      <Calendar className={styles.iconXs} /> End Date Coordination: {asm.dueDate}
+                      <Calendar className={styles.iconXs} /> End Date
+                      Coordination: {asm.dueDate}
                     </p>
                   </div>
-                  
-                  {/* Wrapped inside CSS Module wrapper class */}
+
                   <div className={styles.assessmentActions}>
-                    <Button 
+                    <Button
                       disabled={isSubmitted}
                       onClick={() => {
                         if (isTeacher) {
@@ -337,13 +375,13 @@ export function CourseWorkspace({
                           setSelectedActiveTest(asm);
                           setIsStudentTestOpen(true);
                         }
-                      }} 
+                      }}
                       className={styles.assessmentActionBtn}
                     >
-                      {isTeacher 
-                        ? "Grade Logs" 
-                        : isSubmitted 
-                          ? "Submitted" 
+                      {isTeacher
+                        ? "Grade Logs"
+                        : isSubmitted
+                          ? "Submitted"
                           : "Launch Task"}
                     </Button>
 
@@ -374,29 +412,33 @@ export function CourseWorkspace({
       </Tabs>
 
       {/* Internal Sub-Modal Nodes */}
-      <PdfViewModal url={activePdfUrl} title={activePdfTitle} onClose={() => setActivePdfUrl(null)} />
-      
-      <CreateModuleModal 
-        isOpen={isModuleModalOpen} 
-        onClose={() => setIsModuleModalOpen(false)} 
-        activeSubjectId={activeSubjectId} 
-      />
-      
-      <CreateAssessmentModal 
-        isOpen={isAssessmentModalOpen} 
-        onClose={() => setIsAssessmentModalOpen(false)} 
-        activeSubjectId={activeSubjectId} 
+      <PdfViewModal
+        url={activePdfUrl}
+        title={activePdfTitle}
+        onClose={() => setActivePdfUrl(null)}
       />
 
-      <CreateSubjectModal 
-        isOpen={isSubjectModalOpen} 
-        onClose={() => setIsSubjectModalOpen(false)} 
+      <CreateModuleModal
+        isOpen={isModuleModalOpen}
+        onClose={() => setIsModuleModalOpen(false)}
+        activeSubjectId={activeSubjectId}
       />
 
-      <StudentAssessmentModal 
-        isOpen={isStudentTestOpen} 
-        onClose={() => setIsStudentTestOpen(false)} 
-        assessment={selectedActiveTest} 
+      <CreateAssessmentModal
+        isOpen={isAssessmentModalOpen}
+        onClose={() => setIsAssessmentModalOpen(false)}
+        activeSubjectId={activeSubjectId}
+      />
+
+      <CreateSubjectModal
+        isOpen={isSubjectModalOpen}
+        onClose={() => setIsSubjectModalOpen(false)}
+      />
+
+      <StudentAssessmentModal
+        isOpen={isStudentTestOpen}
+        onClose={() => setIsStudentTestOpen(false)}
+        assessment={selectedActiveTest}
       />
 
       <TeacherAssessmentReviewModal

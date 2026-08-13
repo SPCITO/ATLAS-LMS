@@ -1,26 +1,26 @@
 .card {
   background-color: #ffffff;
   border-color: rgba(226, 232, 240, 0.8);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
   overflow: hidden;
-  flex: 1 1 0%;
+  box-sizing: border-box;
 }
 
 .header {
   border-bottom: 1px solid #f1f5f9;
   flex-shrink: 0;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+  padding: 0.75rem 1rem;
 }
 
 .title {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -35,34 +35,71 @@
   height: 0.875rem;
   width: 0.875rem;
   color: var(--primary, #0f172a);
+  flex-shrink: 0;
 }
 
+/* Content Container - Switch between Horizontal Scroll on Mobile & Vertical Grid on Desktop */
 .content {
   flex: 1 1 0%;
-  overflow-y: auto;
-  padding: 0.75rem;
+  padding: 0.5rem;
   display: flex;
-  flex-direction: column;
   gap: 0.5rem;
   min-height: 0;
+
+  /* Mobile & Tablet Portrait: Horizontal scrollable strip */
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Item Button */
+/* Custom Scrollbar for Desktop/Tablet Landscape */
+.content::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.content::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 9999px;
+}
+
+/* Responsive layout switch: Vertical layout for Tablet Landscape & Desktop */
+@media (min-width: 1024px) {
+  .content {
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+/* Item Button Base */
 .itemBtn {
-  width: 100%;
-  padding: 0.75rem;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  padding: 0.5rem 0.75rem;
   border-radius: 0.75rem;
   text-align: left;
   transition: all 0.15s ease;
   display: flex;
   align-items: center;
-  gap: 0.875rem;
-  border-width: 1px;
-  border-style: solid;
+  gap: 0.625rem;
+  border: 1px solid #f1f5f9;
   cursor: pointer;
-  background-color: rgba(248, 250, 252, 0.5);
+  background-color: rgba(248, 250, 252, 0.8);
   color: #334155;
-  border-color: #f1f5f9;
+
+  /* Mobile dimensions: compact pill size */
+  max-width: 200px;
+  width: max-content;
+}
+
+@media (min-width: 1024px) {
+  .itemBtn {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.625rem 0.75rem;
+  }
 }
 
 .itemBtn:hover {
@@ -73,7 +110,7 @@
   background-color: var(--primary, #0f172a);
   color: var(--primary-foreground, #ffffff);
   border-color: var(--primary, #0f172a);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.15);
 }
 
 .itemBtnActive:hover {
@@ -82,15 +119,16 @@
 
 /* Badge Icon Container */
 .iconBadge {
-  padding: 0.5rem;
-  border-radius: 0.75rem;
-  border-width: 1px;
-  border-style: solid;
+  padding: 0.375rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(209, 250, 229, 0.8);
   flex-shrink: 0;
   transition: background-color 0.15s ease;
   background-color: #ecfdf5;
-  border-color: rgba(209, 250, 229, 0.8);
   color: #004b23;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .itemBtn:hover .iconBadge {
@@ -98,34 +136,36 @@
 }
 
 .iconBadgeActive {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
   color: #ffffff;
 }
 
 .itemBtnActive:hover .iconBadgeActive {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .subjectIcon {
-  height: 1rem;
-  width: 1rem;
+  height: 0.875rem;
+  width: 0.875rem;
   stroke-width: 2.2;
 }
 
-/* Text Container */
+/* Text Meta Container */
 .metaContainer {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  overflow: hidden;
 }
 
 .codeMeta {
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #94a3b8;
+  white-space: nowrap;
 }
 
 .codeMetaActive {
@@ -133,12 +173,12 @@
 }
 
 .subjectTitle {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.375;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-top: 0.125rem;
+  margin-top: 0.05rem;
 }
